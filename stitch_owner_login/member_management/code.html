@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;800;900&amp;family=Manrope:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed-variant": "#625400",
+                        "on-surface": "#ffffff",
+                        "surface-variant": "#262626",
+                        "on-primary-fixed": "#3b4a00",
+                        "error-dim": "#d53d18",
+                        "outline": "#767575",
+                        "tertiary-dim": "#e5c930",
+                        "on-tertiary-fixed": "#423800",
+                        "on-primary-fixed-variant": "#546900",
+                        "surface-bright": "#2c2c2c",
+                        "on-surface-variant": "#adaaaa",
+                        "secondary-dim": "#ff7441",
+                        "inverse-primary": "#526700",
+                        "surface-tint": "#f4ffc9",
+                        "inverse-on-surface": "#565555",
+                        "primary-fixed-dim": "#c1ed00",
+                        "error-container": "#b92902",
+                        "tertiary": "#ffe56b",
+                        "surface-dim": "#0e0e0e",
+                        "surface-container": "#1a1a1a",
+                        "secondary-fixed": "#ffc4b1",
+                        "outline-variant": "#484847",
+                        "background": "#0e0e0e",
+                        "on-background": "#ffffff",
+                        "surface": "#0e0e0e",
+                        "on-secondary": "#410f00",
+                        "inverse-surface": "#fcf9f8",
+                        "surface-container-highest": "#262626",
+                        "tertiary-container": "#f4d73e",
+                        "on-error": "#450900",
+                        "surface-container-lowest": "#000000",
+                        "primary-container": "#cefc22",
+                        "primary-dim": "#c1ed00",
+                        "primary": "#f4ffc9",
+                        "on-secondary-fixed-variant": "#932d00",
+                        "secondary": "#ff7441",
+                        "on-primary-container": "#4b5e00",
+                        "on-error-container": "#ffd2c8",
+                        "on-secondary-container": "#fff6f3",
+                        "surface-container-low": "#131313",
+                        "error": "#ff7351",
+                        "on-secondary-fixed": "#631b00",
+                        "tertiary-fixed-dim": "#e5c930",
+                        "on-tertiary": "#615300",
+                        "on-tertiary-container": "#574a00",
+                        "secondary-container": "#ab3600",
+                        "surface-container-high": "#20201f",
+                        "primary-fixed": "#cefc22",
+                        "secondary-fixed-dim": "#ffb197",
+                        "tertiary-fixed": "#f4d73e",
+                        "on-primary": "#526700"
+                    },
+                    fontFamily: {
+                        "headline": ["Lexend"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Manrope', sans-serif;
+        }
+        .asymmetric-border {
+            border-left: 4px solid #cefc22;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 bg-[#0e0e0e] border-r border-[#484847]/20 flex flex-col p-4 gap-2">
+<div class="mb-8">
+<h1 class="text-xl font-black text-[#cefc22] font-['Lexend'] uppercase">IRON PULSE</h1>
+<p class="text-[10px] font-bold tracking-[0.2em] text-on-surface-variant font-['Lexend'] uppercase">Elite Performance</p>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<!-- Dashboard Tab (Inactive) -->
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-[#f4ffc9] hover:bg-[#1a1a1a] transition-all duration-150 font-['Lexend'] uppercase font-bold text-sm tracking-widest group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Members Tab (Active) -->
+<a class="flex items-center gap-3 p-3 bg-[#cefc22] text-[#4b5e00] rounded-sm font-black font-['Lexend'] uppercase text-sm tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Members</span>
+</a>
+<!-- Attendance Tab (Inactive) -->
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-[#f4ffc9] hover:bg-[#1a1a1a] transition-all duration-150 font-['Lexend'] uppercase font-bold text-sm tracking-widest group" href="#">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span>Attendance</span>
+</a>
+<!-- Payments Tab (Inactive) -->
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-[#f4ffc9] hover:bg-[#1a1a1a] transition-all duration-150 font-['Lexend'] uppercase font-bold text-sm tracking-widest group" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span>Payments</span>
+</a>
+<!-- Settings Tab (Inactive) -->
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-[#f4ffc9] hover:bg-[#1a1a1a] transition-all duration-150 font-['Lexend'] uppercase font-bold text-sm tracking-widest group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant/20">
+<button class="w-full bg-primary-container text-on-primary-container font-black py-3 mb-4 rounded-sm font-['Lexend'] uppercase text-xs tracking-widest flex items-center justify-center gap-2 scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+                Add Member
+            </button>
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-error transition-all duration-150 font-['Lexend'] uppercase font-bold text-sm tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 p-8 pt-24 min-h-screen">
+<!-- TopNavBar (Shared Component - Execution) -->
+<header class="fixed top-0 left-64 right-0 z-50 bg-[#0e0e0e] h-16 px-8 flex justify-between items-center border-b border-[#484847]/20">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-transparent border-none text-sm font-label uppercase tracking-widest focus:ring-0 text-on-surface placeholder:text-outline-variant w-64" placeholder="SEARCH ROSTER..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 bg-surface-container-highest rounded-full border border-primary-container/20 overflow-hidden">
+<img alt="Gym Owner Avatar" data-alt="Profile avatar for gym manager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcbpfPHoCMBpARLMfNpNLTFSLGP4cd3tRA3yqhfN34yKQ6nAXSD4N5YdyUtLjUbiLrdbVH3wJMEYyBSnyLqQ19aS7R920Fw-FJXOrSSSu2j2eRcEs7B8E5EkyyrSVx3xcbT7WEVdzHVsTYUzNAN2VDmst83Kv3VStkQaOgm2kjxCH1_JykpKwwo0-4hQHkfPkCWOqEWTZLivsUrwn5NviORaFexiiLoSlstuUifNRaQkzeLNitHyyC25Juwtvcr6bQ8VxYPdpXhF8"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="max-w-7xl mx-auto">
+<!-- Header Section with Asymmetry -->
+<div class="mb-12 flex justify-between items-end">
+<div class="relative">
+<span class="absolute -top-10 -left-4 text-8xl font-black text-white/[0.03] font-headline select-none pointer-events-none">ROSTER</span>
+<h2 class="text-5xl font-black font-headline uppercase tracking-tighter text-on-surface relative">Member <span class="text-primary-container italic">Management</span></h2>
+<div class="w-24 h-1 bg-primary-container mt-2"></div>
+</div>
+<div class="flex gap-4 font-label">
+<div class="bg-surface-container px-6 py-3 border-l-2 border-secondary">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Active Members</p>
+<p class="text-2xl font-bold text-on-surface">1,284</p>
+</div>
+<div class="bg-surface-container px-6 py-3 border-l-2 border-primary-container">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">New This Month</p>
+<p class="text-2xl font-bold text-on-surface">+42</p>
+</div>
+</div>
+</div>
+<!-- Custom Table Component -->
+<div class="bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant/10 shadow-2xl">
+<!-- Table Controls -->
+<div class="p-6 flex justify-between items-center bg-surface-container">
+<div class="flex gap-8">
+<button class="text-primary-container font-black font-label text-sm uppercase tracking-widest flex items-center gap-2">
+                            All Members <span class="bg-primary-container text-on-primary-container px-1.5 py-0.5 text-[10px] rounded">1284</span>
+</button>
+<button class="text-on-surface-variant font-bold font-label text-sm uppercase tracking-widest hover:text-on-surface">Active Only</button>
+<button class="text-on-surface-variant font-bold font-label text-sm uppercase tracking-widest hover:text-on-surface">Overdue</button>
+</div>
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-label text-xs uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+                        Sort by: Recently Joined
+                    </button>
+</div>
+<!-- The Athletic Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/10 bg-surface-container-low">
+<th class="px-8 py-5 text-[11px] font-black font-label text-on-surface-variant uppercase tracking-[0.2em]">Member Profile</th>
+<th class="px-8 py-5 text-[11px] font-black font-label text-on-surface-variant uppercase tracking-[0.2em]">Membership Type</th>
+<th class="px-8 py-5 text-[11px] font-black font-label text-on-surface-variant uppercase tracking-[0.2em]">Last Attendance</th>
+<th class="px-8 py-5 text-[11px] font-black font-label text-on-surface-variant uppercase tracking-[0.2em]">Payment Status</th>
+<th class="px-8 py-5"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<!-- Row 1 -->
+<tr class="group hover:bg-surface-container transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center overflow-hidden">
+<img alt="John Doe" class="object-cover" data-alt="Profile photo of John Doe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBot3lMAwMBd2D4b_0ham6jdHsVVVLQGgHpJH5HqBQf70e4q4Llg7B6V0a87CIhot20AwYKsz4P9IdOQRKHvTLpj_sy9___PTdX9XQcEjWwY0kuyEGunT2fCqEnbw7iuYN4RHtlcj7Yx_BC_jWiVMde3G9oXNj4eBiGupJcmR75dNzLdzevXRrmVcUJRlOHjoMslSN7AvxphyhzI0i-gqxPa-hIpPvbty3k3aSpOVldpEsw6vOKfmm2IcpaxbCRKYT0uX3Wrd8z1B8"/>
+</div>
+<div>
+<p class="text-on-surface font-black font-headline text-lg tracking-tight uppercase">Marcus Thorne</p>
+<p class="text-xs text-on-surface-variant font-label uppercase">Member since Oct 2023</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="inline-block px-3 py-1 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[10px] font-black font-label uppercase tracking-widest">
+                                        Elite Pro • Yearly
+                                    </span>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_#cefc22]"></span>
+<p class="text-on-surface font-label text-sm font-bold uppercase">2 Hours Ago</p>
+</div>
+<p class="text-[10px] text-on-surface-variant font-label uppercase mt-1">Leg Day Session</p>
+</td>
+<td class="px-8 py-6">
+<div class="flex flex-col gap-1">
+<span class="text-primary-container text-xs font-black font-label uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                            Paid
+                                        </span>
+<p class="text-[10px] text-on-surface-variant font-label uppercase">Next: Nov 12, 2024</p>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-surface-container transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center overflow-hidden">
+<img alt="Sarah Chen" class="object-cover" data-alt="Profile photo of Sarah Chen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ3EaO1R0hTlIqvyih_oUQSHbHbJNh2OBLTPKt-Ifrn0__ew65OOw08frYjJObjIYDs3Gs1LYPhBWlFLH58vRyACIq-P0ognywze81yIS1DrY1cMkgV85TNM9BueE3XoAFbTmf52H2xZSr48OtaK9W5Hdt_ZZGYgBGrzbklC4mhvG6EZ7UElBSL7Kd9g6YplXpQy8_FW6M981WG0g6yxF2ex0DaBBVAe_ApoVc3nLgKy9kUHhZNpwHFPZBxMCy0uHYpPEkEipbDTk"/>
+</div>
+<div>
+<p class="text-on-surface font-black font-headline text-lg tracking-tight uppercase">Sarah Chen</p>
+<p class="text-xs text-on-surface-variant font-label uppercase">Member since Jan 2024</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="inline-block px-3 py-1 bg-tertiary/10 border border-tertiary/30 text-tertiary text-[10px] font-black font-label uppercase tracking-widest">
+                                        VIP Access • Monthly
+                                    </span>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-on-surface-variant/40"></span>
+<p class="text-on-surface font-label text-sm font-bold uppercase">2 Days Ago</p>
+</div>
+<p class="text-[10px] text-on-surface-variant font-label uppercase mt-1">HIIT Class</p>
+</td>
+<td class="px-8 py-6">
+<div class="flex flex-col gap-1">
+<span class="text-secondary text-xs font-black font-label uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+                                            Overdue (3d)
+                                        </span>
+<p class="text-[10px] text-on-surface-variant font-label uppercase">Last: Sep 12, 2024</p>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-surface-container transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center overflow-hidden">
+<img alt="Rick Vance" class="object-cover" data-alt="Profile photo of Rick Vance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI7sDXRicKIfAsCBPqdvwWXH-QBuPfWKsC0kmwdYzL9jvheMfs9R9xpj3dYhLX2pfmRALBSak55TYXkroazAH_3F3eYcnot-8kPrciD9MwPGXo40QicRaG4L7wl0CoM3xujk8mVx3E7NBTEzLsMIxOrVdkGKtrq_PNl0jJDedanV3fiIe_4gYBR9iPblJf9dtsoSUp0AFJGp-ej17pMV8IBagfKLtSqM2MThXLSeiInEcn0stBWm5ZaaybXvUx5a5kOFsJBOBZyOA"/>
+</div>
+<div>
+<p class="text-on-surface font-black font-headline text-lg tracking-tight uppercase">Rick Vance</p>
+<p class="text-xs text-on-surface-variant font-label uppercase">Member since Jul 2022</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="inline-block px-3 py-1 bg-surface-variant border border-outline-variant/30 text-on-surface-variant text-[10px] font-black font-label uppercase tracking-widest">
+                                        Basic Strength
+                                    </span>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_#cefc22]"></span>
+<p class="text-on-surface font-label text-sm font-bold uppercase">LIVE NOW</p>
+</div>
+<p class="text-[10px] text-primary-container font-label uppercase mt-1">Cardio Deck</p>
+</td>
+<td class="px-8 py-6">
+<div class="flex flex-col gap-1">
+<span class="text-primary-container text-xs font-black font-label uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                            Paid
+                                        </span>
+<p class="text-[10px] text-on-surface-variant font-label uppercase">Next: Dec 01, 2024</p>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-surface-container transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center overflow-hidden">
+<img alt="Ava Miller" class="object-cover" data-alt="Profile photo of Ava Miller" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcjSAnbJ2_f20Xm2W6_fP-RTybFGGgw3DHCFpinm3I8VGDv-O0y1xp7jXOfPy5wAGFfgMKIyfDyz_69SiLc6NfYcCc7KYDVriunc3x0q9lCwc3JYruJ207M5z3yjahGfkdFijfm1lzwI4TqR4HTLdb4SKQrkChMMRgdEUcOTDAae6Cb-2VuPsTkpDR4fXQUX3EIj6jWsC49sP2X6iUctt6mAUu7wiOut3P5WxGsM40h3JYGTo_MtHMbv0PHU6-m9OPGcbd-t4Zm04"/>
+</div>
+<div>
+<p class="text-on-surface font-black font-headline text-lg tracking-tight uppercase">Ava Miller</p>
+<p class="text-xs text-on-surface-variant font-label uppercase">Member since May 2024</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="inline-block px-3 py-1 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[10px] font-black font-label uppercase tracking-widest">
+                                        Elite Pro • Monthly
+                                    </span>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_#ff7351]"></span>
+<p class="text-error font-label text-sm font-bold uppercase">12 Days Ago</p>
+</div>
+<p class="text-[10px] text-on-surface-variant font-label uppercase mt-1">Status: At Risk</p>
+</td>
+<td class="px-8 py-6">
+<div class="flex flex-col gap-1">
+<span class="text-primary-container text-xs font-black font-label uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                            Paid
+                                        </span>
+<p class="text-[10px] text-on-surface-variant font-label uppercase">Next: Nov 22, 2024</p>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer / Pagination -->
+<div class="p-6 bg-surface-container-low flex justify-between items-center border-t border-outline-variant/5">
+<p class="text-[11px] font-label text-on-surface-variant uppercase tracking-widest">Showing 1-10 of 1,284 Members</p>
+<div class="flex gap-2">
+<button class="h-10 w-10 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="h-10 px-4 border border-primary-container/30 bg-primary-container text-on-primary-container font-black font-label text-xs uppercase">1</button>
+<button class="h-10 px-4 border border-outline-variant/30 text-on-surface-variant font-black font-label text-xs uppercase hover:bg-surface-container">2</button>
+<button class="h-10 px-4 border border-outline-variant/30 text-on-surface-variant font-black font-label text-xs uppercase hover:bg-surface-container">3</button>
+<button class="h-10 w-10 border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Contextual Stats Cards (Bento Style) -->
+<div class="mt-12 grid grid-cols-12 gap-6">
+<div class="col-span-8 bg-surface-container p-8 relative overflow-hidden group">
+<div class="absolute -right-8 -bottom-8 opacity-10 group-hover:scale-110 transition-transform duration-700">
+<span class="material-symbols-outlined text-[180px] text-primary-container" data-icon="monitoring">monitoring</span>
+</div>
+<div class="relative z-10">
+<h3 class="text-2xl font-black font-headline uppercase tracking-tighter mb-2">Member Retention <span class="text-primary-container">Insights</span></h3>
+<p class="text-on-surface-variant font-body max-w-md mb-6">Attendance is up 12% across VIP tiers this month. Current retention rate remains stable at 94.2%.</p>
+<button class="text-primary-container font-black font-label text-xs uppercase tracking-widest flex items-center gap-2 group">
+                            Generate Full Report
+                            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="col-span-4 bg-secondary p-8 flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-on-secondary text-4xl mb-4" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<h3 class="text-on-secondary font-black font-headline text-3xl uppercase leading-none tracking-tighter">14 Payments<br/>Pending</h3>
+</div>
+<button class="w-full bg-on-secondary text-secondary font-black py-3 rounded-sm font-label uppercase text-xs tracking-widest mt-4">
+                        Review All
+                    </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

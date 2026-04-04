@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Attendance Marking | KINETIC</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;800;900&amp;family=Manrope:wght@400;500;700&amp;family=Space+Grotesk:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#625400",
+              "on-surface": "#ffffff",
+              "surface-variant": "#262626",
+              "on-primary-fixed": "#3b4a00",
+              "error-dim": "#d53d18",
+              "outline": "#767575",
+              "tertiary-dim": "#e5c930",
+              "on-tertiary-fixed": "#423800",
+              "on-primary-fixed-variant": "#546900",
+              "surface-bright": "#2c2c2c",
+              "on-surface-variant": "#adaaaa",
+              "secondary-dim": "#ff7441",
+              "inverse-primary": "#526700",
+              "surface-tint": "#f4ffc9",
+              "inverse-on-surface": "#565555",
+              "primary-fixed-dim": "#c1ed00",
+              "error-container": "#b92902",
+              "tertiary": "#ffe56b",
+              "surface-dim": "#0e0e0e",
+              "surface-container": "#1a1a1a",
+              "secondary-fixed": "#ffc4b1",
+              "outline-variant": "#484847",
+              "background": "#0e0e0e",
+              "on-background": "#ffffff",
+              "surface": "#0e0e0e",
+              "on-secondary": "#410f00",
+              "inverse-surface": "#fcf9f8",
+              "surface-container-highest": "#262626",
+              "tertiary-container": "#f4d73e",
+              "on-error": "#450900",
+              "surface-container-lowest": "#000000",
+              "primary-container": "#cefc22",
+              "primary-dim": "#c1ed00",
+              "primary": "#f4ffc9",
+              "on-secondary-fixed-variant": "#932d00",
+              "secondary": "#ff7441",
+              "on-primary-container": "#4b5e00",
+              "on-error-container": "#ffd2c8",
+              "on-secondary-container": "#fff6f3",
+              "surface-container-low": "#131313",
+              "error": "#ff7351",
+              "on-secondary-fixed": "#631b00",
+              "tertiary-fixed-dim": "#e5c930",
+              "on-tertiary": "#615300",
+              "on-tertiary-container": "#574a00",
+              "secondary-container": "#ab3600",
+              "surface-container-high": "#20201f",
+              "primary-fixed": "#cefc22",
+              "secondary-fixed-dim": "#ffb197",
+              "tertiary-fixed": "#f4d73e",
+              "on-primary": "#526700"
+            },
+            fontFamily: {
+              "headline": ["Lexend"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0e0e0e; }
+        ::-webkit-scrollbar-thumb { background: #484847; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 bg-[#0e0e0e] flex flex-col p-4 gap-2 border-r border-[#484847]/20">
+<div class="mb-8">
+<h1 class="text-xl font-black text-[#cefc22] font-['Lexend'] uppercase tracking-tighter">IRON PULSE</h1>
+<p class="text-[10px] font-['Lexend'] font-bold text-on-surface-variant tracking-[0.2em] uppercase">Elite Performance</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#adaaaa] font-['Lexend'] uppercase font-bold text-sm tracking-widest hover:bg-[#1a1a1a] transition-all duration-150 rounded-sm" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#adaaaa] font-['Lexend'] uppercase font-bold text-sm tracking-widest hover:bg-[#1a1a1a] transition-all duration-150 rounded-sm" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Members</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-[#cefc22] text-[#4b5e00] font-['Lexend'] uppercase font-black text-sm tracking-widest rounded-sm" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span>Attendance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#adaaaa] font-['Lexend'] uppercase font-bold text-sm tracking-widest hover:bg-[#1a1a1a] transition-all duration-150 rounded-sm" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span>Payments</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#adaaaa] font-['Lexend'] uppercase font-bold text-sm tracking-widest hover:bg-[#1a1a1a] transition-all duration-150 rounded-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-outline-variant/20">
+<button class="w-full bg-[#cefc22] text-[#4b5e00] font-['Lexend'] font-black uppercase text-xs tracking-widest py-3 mb-4 rounded-sm hover:bg-[#f4ffc9] transition-colors">
+                Add Member
+            </button>
+<a class="flex items-center gap-3 px-4 py-3 text-[#adaaaa] font-['Lexend'] uppercase font-bold text-sm tracking-widest hover:bg-[#1a1a1a] transition-all duration-150 rounded-sm" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 left-64 z-50 bg-[#131313] flex justify-between items-center h-16 px-8 border-b border-[#484847]/20">
+<div class="flex items-center gap-8">
+<div class="text-2xl font-black italic text-[#cefc22] tracking-tighter font-['Lexend'] uppercase">KINETIC</div>
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined text-xl">search</span>
+</span>
+<input class="bg-surface-container-highest border-none text-xs font-label tracking-widest pl-10 pr-4 py-2 w-64 focus:ring-1 focus:ring-primary-container rounded-sm uppercase" placeholder="SEARCH ATHLETES..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="Gym Owner Avatar" class="w-full h-full object-cover" data-alt="Gym owner profile portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0R_ZalR1fwgLaJgheGgO8fxGgN5hy_I0mk-dRsCyqCXtFV_r1Z6xvOUZgi2lYUzJfW5HsTkpxMxtS2OzQSywwAGok6tCMQp4Vu6xDTctIPqHtTsPvbr2sfDwPx-6gq3BafGipIP9VEeaZMAGQSsJs5Pg6qi1PZgwEKJgTntxasBO0gFbJtiYSATEakWxf_RLW6uMf7S7Oq4cc-Yo8nRPMVqaeHjLRBHeeliuRUrTOJhQGhjrO6Xmm2k-PQHZFm69pVt-1kl8HshQ"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="pt-24 px-8 pb-12">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-12">
+<div>
+<span class="font-label text-primary font-bold tracking-[0.3em] text-xs uppercase">Daily Log</span>
+<h2 class="font-headline text-5xl font-black uppercase tracking-tighter mt-2">Attendance <span class="text-primary-container/20 italic">Marking</span></h2>
+</div>
+<div class="flex gap-4">
+<div class="bg-surface-container-low px-6 py-4 flex flex-col items-end border-r-4 border-primary-container">
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-widest">Active Now</span>
+<span class="font-headline text-3xl font-black text-primary-container">42</span>
+</div>
+<div class="bg-surface-container-low px-6 py-4 flex flex-col items-end border-r-4 border-secondary">
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-widest">Daily Goal</span>
+<span class="font-headline text-3xl font-black text-secondary">85%</span>
+</div>
+</div>
+</div>
+<!-- Stats & Filter Bar -->
+<div class="grid grid-cols-12 gap-6 mb-8">
+<div class="col-span-12 md:col-span-8 flex gap-2">
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-headline font-black text-xs uppercase tracking-widest rounded-sm">All Members</button>
+<button class="bg-surface-container text-on-surface-variant px-6 py-2 font-headline font-bold text-xs uppercase tracking-widest rounded-sm hover:text-primary transition-colors">Morning Blast</button>
+<button class="bg-surface-container text-on-surface-variant px-6 py-2 font-headline font-bold text-xs uppercase tracking-widest rounded-sm hover:text-primary transition-colors">Power Hour</button>
+<button class="bg-surface-container text-on-surface-variant px-6 py-2 font-headline font-bold text-xs uppercase tracking-widest rounded-sm hover:text-primary transition-colors">Evening Flow</button>
+</div>
+<div class="col-span-12 md:col-span-4 flex justify-end items-center gap-4 text-xs font-label uppercase tracking-[0.2em] text-on-surface-variant">
+<span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary-container"></span> Present</span>
+<span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-surface-variant"></span> Pending</span>
+</div>
+</div>
+<!-- Attendance Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
+<!-- Member Card: Present -->
+<div class="bg-surface-container-low group hover:bg-surface-container transition-colors p-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Athlete muscular man portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7elYOsm066TfYYScguTDQTRj3BlJXXfI3-jfPjldJM8f-u9Bi7Cp8LFJAY-D9Dq72sQJKlvP1SM6VhqZD38f0T0KDvxBEu8JZQr7bJafen-zysOh2cF04XoXmdYOJYMSkU6bAKyuHyZV6UiZXlcG-2-_Gg53uO84Hvp7Way7NS-rJb7f6pJ4ELblqXN2u1RpKdECw2zhsUo8TmC6PY9QjYiuJyGB_bfhHQkZo3e1qTlGVWnLQ6DYPond5hytr5xfTWl59RBLW6JU"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-primary-container border-2 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-tight uppercase">Marcus Vane</h3>
+<p class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">PRO ATHLETE • ID: 8821</p>
+</div>
+</div>
+<button class="w-14 h-14 bg-primary-container text-on-primary-container flex items-center justify-center transition-transform active:scale-90">
+<span class="material-symbols-outlined font-black" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+</div>
+<!-- Member Card: Pending -->
+<div class="bg-surface-container-low group hover:bg-surface-container transition-colors p-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Athlete woman lifting weights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwgrEhfWVOmhM9Jq7nc6a2HzoM_lRcVzec9ptCfxH5dR9-ZwTCz5zb-hf-7AIf9aZn2os8XpGTjtQdDP-0JT3s5LiDCxI4g3xehv81mSx1jFn3f6dUKF5rjlFK557gNN5d7v06YpyiyqUS3PZZNPVVkYlJkQH_IBrO_cLJCLHY_36at_1MWtiEhFXDfKocnDkRM3GQS8mk0yY920n61f7abEBrNIuBICaUtTjBwUQWMXiyfG3q-FC3awfaRkyFodyMqEbnivLMrzM"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-surface-variant border-2 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-tight uppercase">Elena Rossi</h3>
+<p class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">ELITE • ID: 8845</p>
+</div>
+</div>
+<button class="w-14 h-14 bg-surface-container-highest text-on-surface-variant hover:text-primary-container border border-outline-variant/20 flex items-center justify-center transition-all active:scale-90 group-hover:border-primary-container/30">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+</button>
+</div>
+<!-- Member Card: Pending -->
+<div class="bg-surface-container-low group hover:bg-surface-container transition-colors p-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Muscular back of a trainee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAAumtYwRNuYW8mZsrf1aPmY3AdEOuRPQ8v1iHDtryb99MqMdE_axEDP1VMVM1i1lsSo7B8rGdGrBugu_oJ2Gso_J_iKeFhgSpYKxZwiXjyROlDFr7S5BVVeAJt7le50Anod4cqjPyTvN8VRWcxIKApDGfeUrjrnfjk1Y7YqbtFysYQQ4JN0jG_1MQa2VOfpKArm96YIZGYktHmDD7yqhoT3Vihs1frJhElTSFiTngSQVZFQH5njCMVIUtEKQF5ph548TBKah9tf0"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-surface-variant border-2 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-tight uppercase">Jaxson Thorne</h3>
+<p class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">MASTER • ID: 8902</p>
+</div>
+</div>
+<button class="w-14 h-14 bg-surface-container-highest text-on-surface-variant hover:text-primary-container border border-outline-variant/20 flex items-center justify-center transition-all active:scale-90 group-hover:border-primary-container/30">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+</button>
+</div>
+<!-- Member Card: Present -->
+<div class="bg-surface-container-low group hover:bg-surface-container transition-colors p-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Athlete focused during workout" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn3IjupSaAmW1UdAAoTv0kXfVWeBvUS3zcc1YJV0UyToX2Ggy8cGPkdiasZR2WlI-Tw7HcpZzN1aRg4XMAhnUuuGxLk7lvXoP6D5inBSg6NwiEJqy9Ke1YYXA0_PXWG8BuGlLIzOJNfKx1MD8FPhChDI9eqIMPb-vOV1WpO79EPQ06pLF06KLOqS7Q2-mU-JJAO8-qLpN9vK8_1-Zcu9zBcA2r7vSj_EO7G1o9vdcgPAza-rH-HfYgeU1wvGPa1DjkZG4oBtQJcno"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-primary-container border-2 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-tight uppercase">Sarah Jenkins</h3>
+<p class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">BASIC • ID: 8711</p>
+</div>
+</div>
+<button class="w-14 h-14 bg-primary-container text-on-primary-container flex items-center justify-center transition-transform active:scale-90">
+<span class="material-symbols-outlined font-black" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+</div>
+<!-- Member Card: Alert/Payment Issue -->
+<div class="bg-surface-container-low group hover:bg-surface-container transition-colors p-6 flex items-center justify-between border-l-4 border-secondary">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Tired athlete sitting on floor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8Fg35SWrx2gPHGaGBGUKoH5lHX4Assn76rfriZISfZNZVlx16ONAkdz2twOWEpHIfDJWYE8BbQlnZ5G8aNg-eZrIp0wWMK0z1L7yRPVSHLTXgK7Tvhu-YqFmf3PCxoSqjoRPVMqFbTR01Qw1qwaAP89Dbc6TZDZutUDUPY5xIrq_5j01nVKjMEx5ld6_zwW-rzRlD79YeHCSC8312Qe2dcqm9i5c10iwMDro1AIYXryPE5I7dPnYvdqqX9M8ezFQPGpHvaIpGcyo"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary border-2 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-tight uppercase">David Kim</h3>
+<p class="font-label text-[10px] text-secondary tracking-widest uppercase mt-1 font-bold">PAYMENT OVERDUE</p>
+</div>
+</div>
+<button class="w-14 h-14 bg-surface-container-highest text-secondary border border-secondary/20 flex items-center justify-center transition-all active:scale-90">
+<span class="material-symbols-outlined">warning</span>
+</button>
+</div>
+<!-- Member Card: Present -->
+<div class="bg-surface-container-low group hover:bg-surface-container transition-colors p-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Boxer during training session" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkJi-tAS4dfBk57yS3u7E7HSS2jS9eDSYgkarqOtb1IvsKwkuBEH-Eib4V3yihHm5UROoWrz_NPb9aM3srd0EgftkRFHp3AeRlEGPDX0Fp6u6ecNyo6kqPxhwuADza3trljE00yPxOWzsA2ZfK7VdbG-ztF-nvgCg4YTbn7-aitvzPGjUOQU6-YglToJ8BtBC62XXM8IiUSjTmnZ-USMuuvgl7PC_MXwhJncjKkIaUTo2cxj9SGBwmcW45yVMZ6CPJ89Mm_wi-rmU"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-primary-container border-2 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-tight uppercase">Leo Martinez</h3>
+<p class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">ELITE • ID: 8990</p>
+</div>
+</div>
+<button class="w-14 h-14 bg-primary-container text-on-primary-container flex items-center justify-center transition-transform active:scale-90">
+<span class="material-symbols-outlined font-black" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+</div>
+<!-- Member Card: Pending -->
+<div class="bg-surface-container-low group hover:bg-surface-container transition-colors p-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Powerlifter preparing for lift" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNOGwMZs9Ntww6dBfCJG7-rVcNP-Jb5PNYQO1bHOAG9pAH6CJE_ECpYf1uqIzHaKq5L7TosMLmX_CECKfET35qHo8wRXo0wEi6hIebEiJ5tDonKlcEpUKV0_0QnDYAvaHONFLybGh68AMmh06v7hSMDK1iZaNmQ1jomqT-zZuNSvIFZOpc3A-NZuafO04_5o7QQ2MLnL1k7AJ_TIraOd-SVQoN97Z80xvHvJVyC9fcYSd6cOwVghHDok-Oqp69ciPuTyBTb0l57bs"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-surface-variant border-2 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-tight uppercase">Chloe Wu</h3>
+<p class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">PRO ATHLETE • ID: 8654</p>
+</div>
+</div>
+<button class="w-14 h-14 bg-surface-container-highest text-on-surface-variant hover:text-primary-container border border-outline-variant/20 flex items-center justify-center transition-all active:scale-90 group-hover:border-primary-container/30">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+</button>
+</div>
+<!-- Member Card: Pending -->
+<div class="bg-surface-container-low group hover:bg-surface-container transition-colors p-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Bodybuilder flex in gym" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDz98HU0ve-0dFe_8DOJH9P4b_S0w5IsuoOWDjv0DHq_2iQFSK6usTR5oDsjSxfFuwPkW7-Q8gHE83ziF02F-EIGlYkrrG2C-jgeqmNj07WHjpH6NTFTGgI1oBLJE3BjvGG9INqbAq7bnNg3rT85CBpxXvN4zlkdWGYpVBx7NE0ejgLvYEwcgcsU7R1cnQm0O5a_aps6ScBFnyYraMFzOz5imrtOR0C_M6pK9xv2QdyMH7TZCvpfrR_kmw5fcrLir0dO8XAuMqViRY"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-surface-variant border-2 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-tight uppercase">Viktor Volkov</h3>
+<p class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">ELITE • ID: 8831</p>
+</div>
+</div>
+<button class="w-14 h-14 bg-surface-container-highest text-on-surface-variant hover:text-primary-container border border-outline-variant/20 flex items-center justify-center transition-all active:scale-90 group-hover:border-primary-container/30">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+</button>
+</div>
+<!-- Member Card: Pending -->
+<div class="bg-surface-container-low group hover:bg-surface-container transition-colors p-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Kettlebell workout close up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeN90hDmzV5E5LM5VKbIj69mto4gZk9PHFttrltV6r6oXKNVdF4d7Vkze57219RNR7C9_M-pRzjHUNWkS5Z3raNwlfRJYaqB79TVFs1CfZ97Zmm1Gm0v32UAakSs-LsrF6U4EQdeqhrFmkDx_ezt4RXDsGYbMRx2-kn4WSz7rUSHmorsYcHOXByWWYxWhB8JAVquTh-wXQc7iVR6S0kDKbPRq_wCoeXwu3bbWBdp4BeULbin6MNFEAnO16pmtvZLZJ3325wNgY3pY"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-surface-variant border-2 border-surface-container-low"></div>
+</div>
+<div>
+<h3 class="font-headline font-bold text-lg leading-tight uppercase">Aria Vance</h3>
+<p class="font-label text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">BASIC • ID: 8501</p>
+</div>
+</div>
+<button class="w-14 h-14 bg-surface-container-highest text-on-surface-variant hover:text-primary-container border border-outline-variant/20 flex items-center justify-center transition-all active:scale-90 group-hover:border-primary-container/30">
+<span class="material-symbols-outlined">radio_button_unchecked</span>
+</button>
+</div>
+</div>
+<!-- Large Action Bento Footer -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="col-span-1 md:col-span-2 bg-surface-container p-8 flex flex-col justify-between border-t-2 border-primary-container">
+<div>
+<h4 class="font-headline text-2xl font-black uppercase tracking-tighter">Session Summary</h4>
+<p class="text-on-surface-variant font-body text-sm mt-2 max-w-xs">Today's volume is up 12% compared to last Tuesday. High engagement in early slots.</p>
+</div>
+<div class="mt-6 flex gap-4">
+<div class="flex flex-col">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Expected</span>
+<span class="font-headline text-xl font-bold">128</span>
+</div>
+<div class="flex flex-col border-l border-outline-variant/30 pl-4">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Marked</span>
+<span class="font-headline text-xl font-bold text-primary-container">42</span>
+</div>
+</div>
+</div>
+<button class="bg-primary-container group relative overflow-hidden p-8 flex flex-col items-center justify-center text-on-primary-container hover:bg-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-4xl mb-2 font-black">save</span>
+<span class="font-headline font-black text-lg uppercase tracking-widest">Finalize Log</span>
+<div class="absolute bottom-0 right-0 p-2 opacity-10 group-hover:scale-150 transition-transform">
+<span class="material-symbols-outlined text-6xl">verified</span>
+</div>
+</button>
+<button class="bg-surface-container-highest p-8 flex flex-col items-center justify-center text-on-surface hover:bg-surface-bright transition-colors border border-outline-variant/20">
+<span class="material-symbols-outlined text-4xl mb-2">file_download</span>
+<span class="font-headline font-black text-lg uppercase tracking-widest">Export CSV</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Contextual FAB - Only for specific action if needed -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="w-16 h-16 bg-primary-container text-on-primary-container rounded-none flex items-center justify-center shadow-[0_0_30px_rgba(206,252,34,0.1)] hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-3xl font-bold">qr_code_scanner</span>
+</button>
+</div>
+</body></html>

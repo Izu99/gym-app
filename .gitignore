@@ -1,0 +1,65 @@
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+*.apk
+*.aar
+*.zip
+*.tar.gz
+
+# iOS/macOS
+ios/
+macos/
+
+# Android
+.gradle/
+.android/
+local.properties
+*.iml
+android/local.properties
+android/.gradle/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# IDE
+.vscode/
+.vs/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Windows
+*.exe
+*.dll
+*.dylib
+*.a
+*.lib
+
+# Build artifacts
+dist/
+*.o
+*.so
+
+# Project specific
+analysis_output.txt

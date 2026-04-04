@@ -1,0 +1,158 @@
+const mongoose = require('mongoose');
+const Payment = require('../models/Payment');
+const Member = require('../models/Member');
+
+// @desc    Get payments
+// @route   GET /api/payments
+exports.getPayments = async (req, res) => {
+  try {
+    const { status, page = 1, limit = 20 } = req.query;
+    const filter = { owner: req.user.id };
+    if (status) filter.status = status;
+
+    const skip = (Number(page) - 1) * Number(limit);
+    const [payments, total] = await Promise.all([
+      Payment.find(filter)
+        .populate('member', 'name initials tier')
+        .sort({ dueDate: -1 })
+        .skip(skip)
+        .limit(Number(limit)),
+      Payment.countDocuments(filter),
+    ]);
+
+    const now = new Date();
+    const paymentsWithStatus = payments.map((p) => {
+      const payment = p.toObject();
+      if (payment.status !== 'paid' && new Date(payment.dueDate) <= now) {
+        payment.status = 'overdue';
+      }
+      return payment;
+    });
+
+    res.json({
+      payments: paymentsWithStatus,
+      total,
+      page: Number(page),
+      pages: Math.ceil(total / Number(limit)),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// @desc    Create payment
+// @route   POST /api/payments
+exports.createPayment = async (req, res) => {
+  try {
+    const payment = await Payment.create({ ...req.body, owner: req.user.id });
+    res.status(201).json(payment);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+// @desc    Mark payment as paid
+// @route   PATCH /api/payments/:id/mark-paid
+exports.markPaid = async (req, res) => {
+  try {
+    const payment = await Payment.findOneAndUpdate(
+      { _id: req.params.id, owner: req.user.id },
+      { status: 'paid', paidDate: new Date() },
+      { new: true }
+    ).populate('member', 'name initials');
+
+    if (!payment) return res.status(404).json({ error: 'Payment not found' });
+
+    // Sync member payment status
+    await Member.findOneAndUpdate({ _id: payment.member._id, owner: req.user.id }, { paymentStatus: 'paid' });
+
+    res.json(payment);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// @desc    Unmark payment as paid (revert to pending/overdue)
+// @route   PATCH /api/payments/:id/unmark-paid
+exports.unmarkPaid = async (req, res) => {
+  try {
+    const payment = await Payment.findOne({ _id: req.params.id, owner: req.user.id });
+    if (!payment) return res.status(404).json({ error: 'Payment not found' });
+
+    const now = new Date();
+    const isOverdue = new Date(payment.dueDate) <= now;
+    const newStatus = isOverdue ? 'overdue' : 'pending';
+
+    payment.status = newStatus;
+    payment.paidDate = undefined;
+    await payment.save();
+
+    // Sync member payment status
+    await Member.findOneAndUpdate({ _id: payment.member, owner: req.user.id }, { paymentStatus: newStatus });
+
+    res.json(payment);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// @desc    Get payment summary
+// @route   GET /api/payments/summary
+exports.getPaymentSummary = async (req, res) => {
+  try {
+    const now = new Date();
+    const [summary] = await Payment.aggregate([
+      { $match: { owner: new mongoose.Types.ObjectId(req.user.id) } },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: {
+            $sum: { $cond: [{ $eq: ['$status', 'paid'] }, '$amount', 0] },
+          },
+          pendingRevenue: {
+            $sum: { $cond: [{ $ne: ['$status', 'paid'] }, '$amount', 0] },
+          },
+          overdueCount: {
+            $sum: {
+              $cond: [
+                {
+                  $and: [{ $ne: ['$status', 'paid'] }, { $lte: ['$dueDate', now] }],
+                },
+                1,
+                0,
+              ],
+            },
+          },
+        },
+      },
+    ]);
+
+    res.json(summary || { totalRevenue: 0, pendingRevenue: 0, overdueCount: 0 });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// @desc    Get weekly revenue
+// @route   GET /api/payments/weekly
+exports.getWeeklyRevenue = async (req, res) => {
+  try {
+    const since = new Date();
+    since.setDate(since.getDate() - 7);
+
+    const data = await Payment.aggregate([
+      { $match: { owner: new mongoose.Types.ObjectId(req.user.id), status: 'paid', paidDate: { $gte: since } } },
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$paidDate' } },
+          revenue: { $sum: '$amount' },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

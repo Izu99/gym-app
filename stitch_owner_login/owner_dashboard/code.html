@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC | Elite Gym Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Manrope:wght@200..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed-variant": "#625400",
+                        "on-surface": "#ffffff",
+                        "surface-variant": "#262626",
+                        "on-primary-fixed": "#3b4a00",
+                        "error-dim": "#d53d18",
+                        "outline": "#767575",
+                        "tertiary-dim": "#e5c930",
+                        "on-tertiary-fixed": "#423800",
+                        "on-primary-fixed-variant": "#546900",
+                        "surface-bright": "#2c2c2c",
+                        "on-surface-variant": "#adaaaa",
+                        "secondary-dim": "#ff7441",
+                        "inverse-primary": "#526700",
+                        "surface-tint": "#f4ffc9",
+                        "inverse-on-surface": "#565555",
+                        "primary-fixed-dim": "#c1ed00",
+                        "error-container": "#b92902",
+                        "tertiary": "#ffe56b",
+                        "surface-dim": "#0e0e0e",
+                        "surface-container": "#1a1a1a",
+                        "secondary-fixed": "#ffc4b1",
+                        "outline-variant": "#484847",
+                        "background": "#0e0e0e",
+                        "on-background": "#ffffff",
+                        "surface": "#0e0e0e",
+                        "on-secondary": "#410f00",
+                        "inverse-surface": "#fcf9f8",
+                        "surface-container-highest": "#262626",
+                        "tertiary-container": "#f4d73e",
+                        "on-error": "#450900",
+                        "surface-container-lowest": "#000000",
+                        "primary-container": "#cefc22",
+                        "primary-dim": "#c1ed00",
+                        "primary": "#f4ffc9",
+                        "on-secondary-fixed-variant": "#932d00",
+                        "secondary": "#ff7441",
+                        "on-primary-container": "#4b5e00",
+                        "on-error-container": "#ffd2c8",
+                        "on-secondary-container": "#fff6f3",
+                        "surface-container-low": "#131313",
+                        "error": "#ff7351",
+                        "on-secondary-fixed": "#631b00",
+                        "tertiary-fixed-dim": "#e5c930",
+                        "on-tertiary": "#615300",
+                        "on-tertiary-container": "#574a00",
+                        "secondary-container": "#ab3600",
+                        "surface-container-high": "#20201f",
+                        "primary-fixed": "#cefc22",
+                        "secondary-fixed-dim": "#ffb197",
+                        "tertiary-fixed": "#f4d73e",
+                        "on-primary": "#526700"
+                    },
+                    fontFamily: {
+                        "headline": ["Lexend"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0e0e0e;
+            color: #ffffff;
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-[#0e0e0e] flex justify-between items-center h-16 px-6 w-full border-b border-[#484847]/20">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-black italic text-[#cefc22] tracking-tighter font-headline uppercase">KINETIC</span>
+</div>
+<div class="hidden md:flex items-center gap-8 font-headline uppercase font-black tracking-tighter text-sm">
+<a class="text-[#cefc22] border-b-2 border-[#cefc22] transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-[#adaaaa] hover:text-[#f4ffc9] transition-colors duration-200" href="#">Rosters</a>
+<a class="text-[#adaaaa] hover:text-[#f4ffc9] transition-colors duration-200" href="#">Analytics</a>
+<a class="text-[#adaaaa] hover:text-[#f4ffc9] transition-colors duration-200" href="#">Billing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-[#adaaaa] hover:text-[#cefc22] scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-[#adaaaa] hover:text-[#cefc22] scale-95 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-sm bg-surface-container-highest border border-outline-variant/20 overflow-hidden">
+<img alt="Gym Owner Avatar" class="w-full h-full object-cover" data-alt="Close up portrait of a fit gym owner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvNLa09f67joNLUQRwoqB9PAfGQUAJVlmtAeI_9m4TpHscuzlVUkA-qfcUH3SyYE6IQAqukThXi9sPLwT1Igf2dA03yr7N151QlPslTAifPlTM9klnC9SIfPVV8yCkbcyILYXFAo0qW9B19RN3EpxNKJCjZAZ8hybpzGdGccbOZCuYWoYB81oErov0jlD2GsWLdGuIC4y-FxNNavH_RiwU0ZH3_L3yhfAWjV6x78QZK4HLpT145LC3wjpDP0tWXqVwJqmviEjpIBU"/>
+</div>
+</div>
+</nav>
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 bg-[#0e0e0e] flex flex-col p-4 gap-2 border-r border-[#484847]/20 pt-20 hidden md:flex">
+<div class="mb-8">
+<h2 class="text-xl font-black text-[#cefc22] font-headline">IRON PULSE</h2>
+<p class="text-[10px] font-label tracking-[0.2em] text-on-surface-variant uppercase">Elite Performance</p>
+</div>
+<nav class="flex flex-col gap-1 flex-grow">
+<a class="flex items-center gap-3 p-3 bg-[#cefc22] text-[#4b5e00] rounded-sm font-black font-headline text-sm tracking-widest ease-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-[#f4ffc9] hover:bg-[#1a1a1a] font-bold font-headline text-sm tracking-widest ease-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+                Members
+            </a>
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-[#f4ffc9] hover:bg-[#1a1a1a] font-bold font-headline text-sm tracking-widest ease-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+                Attendance
+            </a>
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-[#f4ffc9] hover:bg-[#1a1a1a] font-bold font-headline text-sm tracking-widest ease-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Payments
+            </a>
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-[#f4ffc9] hover:bg-[#1a1a1a] font-bold font-headline text-sm tracking-widest ease-out duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</nav>
+<button class="w-full bg-primary-container text-on-primary-container font-headline font-black py-3 rounded-sm text-xs tracking-widest uppercase mb-4 hover:bg-primary transition-colors">
+            Add Member
+        </button>
+<div class="pt-4 border-t border-outline-variant/10">
+<a class="flex items-center gap-3 p-3 text-[#adaaaa] hover:text-error font-bold font-headline text-sm tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-24 pb-12 px-6 lg:px-10">
+<!-- Hero Header Area -->
+<header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<h1 class="font-headline font-black text-5xl md:text-7xl uppercase tracking-tighter leading-none mb-4 text-on-surface">
+                    Command <span class="text-primary-container">Center</span>
+</h1>
+<p class="font-label text-on-surface-variant uppercase tracking-[0.2em] text-sm">Real-time facility output &amp; telemetry</p>
+</div>
+<div class="flex gap-2">
+<div class="bg-surface-container-low px-4 py-2 border-l-2 border-primary-container">
+<p class="text-[10px] font-label text-on-surface-variant uppercase">Facility Status</p>
+<p class="font-headline font-bold text-primary-container text-sm">PEAK FLOW</p>
+</div>
+</div>
+</header>
+<!-- Key Metrics Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
+<!-- Daily Attendance Card -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-low p-8 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-8xl" data-icon="monitoring">monitoring</span>
+</div>
+<p class="font-label text-on-surface-variant uppercase tracking-widest mb-2 text-xs">Daily Attendance</p>
+<div class="flex items-baseline gap-4">
+<span class="font-headline font-black text-6xl text-on-surface">142</span>
+<span class="font-label text-primary-container text-sm">+12% vs yest.</span>
+</div>
+<div class="mt-8 flex gap-1 h-12 items-end">
+<div class="flex-1 bg-surface-container h-[40%]"></div>
+<div class="flex-1 bg-surface-container h-[60%]"></div>
+<div class="flex-1 bg-surface-container h-[55%]"></div>
+<div class="flex-1 bg-surface-container h-[80%]"></div>
+<div class="flex-1 bg-primary-container h-[95%]"></div>
+<div class="flex-1 bg-surface-container h-[70%]"></div>
+<div class="flex-1 bg-surface-container h-[65%]"></div>
+</div>
+</div>
+<!-- Monthly Revenue Card -->
+<div class="bg-surface-container p-8 border-t-2 border-secondary">
+<p class="font-label text-on-surface-variant uppercase tracking-widest mb-2 text-xs">Monthly Revenue</p>
+<div class="flex flex-col">
+<span class="font-headline font-black text-4xl text-on-surface">$42,850</span>
+<span class="font-label text-secondary text-sm">Projected: $45K</span>
+</div>
+<div class="mt-6 flex items-center justify-between">
+<div class="w-full bg-surface-container-highest h-1">
+<div class="bg-secondary h-full" style="width: 85%"></div>
+</div>
+</div>
+</div>
+<!-- Active Members Card -->
+<div class="bg-surface-container p-8 border-t-2 border-primary-container">
+<p class="font-label text-on-surface-variant uppercase tracking-widest mb-2 text-xs">Active Members</p>
+<div class="flex flex-col">
+<span class="font-headline font-black text-4xl text-on-surface">892</span>
+<span class="font-label text-primary-container text-sm">24 New this week</span>
+</div>
+<div class="mt-6 flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Member avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKYxUEJCCYTboxzXWiBaZD-Ey5H-dyRRuq6Or03_V3zqFbMek8aS6SukeRLVyPD3gQuV1ZEkKX1N2qhIgOny-QYoDIdXepSgtGC0MUMN3n5B0ogRYpkMvLKAhKfWU8tyccMinYl7ITfG3HcJ_Ol6C2E5-5NiMte0MzMRKBcBbVwSZyDpe56FLStDM2tiQtcFXweQUzKGFf4Y5MQgyQ-AuuRYBCPzzKMHcIenGZW-OXWePKPbXz3hbeT1i1NslC_N0IHGjSv1ewOcE"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Member avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwIWGBLBKJyH9J67mEwQz0y7eVzN6CSybR9iG6TBZDQEow-gArJ2HTLQHISLwtkqnnExeBkFWAZ2UrX4eHyNfB1YT8O7ollY8V1qDwsYKDf3AFskNKv-PaCc7Vnft1uZMqJcA-EOwioenqS5HiUuGuXQpDNYBoVSFyabTOIFAfvWBajIB_XviNOPeODsyaHJRsXlqP1V9t1iJKzBSXYp3VCsbpo7Gm2PfXNP0_LNvnTqm-K05A6aCLLbzBlITBTGAmZAja8YsNwb8"/>
+<img class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Member avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkuWXwOPk94Ztemp0Y4lWv4VVdnTr65NOxhdmNPbHcPmY-3MGDb9oBpYbdj300xfcScpMmAIDG1exv1SbvxoT7Pk-yKzDbTW4CodOxdxQjpda2FU9d5Hlk2KVDt95XN0z5vrSNXpLLKIKWilBf4Xqc75HuMqw1tCpXUB1-XXkFlsu0n6rq1uLIirLAlA6G_6vBwR4Ji_DpjNMXnhJ3JJGVlb_nFmhC1a-SHDTlIEYcwwhxNTxsY6DBUt-o1Ikflb9eddn9e_373uQ"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-surface-container-highest flex items-center justify-center text-[10px] font-black">+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Section: Performance Tracking & Recent Activity -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+<!-- Attendance Live Feed -->
+<div class="lg:col-span-2">
+<div class="flex items-center justify-between mb-8 border-b border-outline-variant/20 pb-4">
+<h3 class="font-headline font-bold text-xl uppercase tracking-widest text-on-surface">Live Check-ins</h3>
+<button class="font-label text-xs uppercase text-primary-container tracking-widest hover:underline">View All</button>
+</div>
+<div class="space-y-4">
+<!-- Check-in Item -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="person">person</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">Marcus Thorne</h4>
+<p class="font-label text-[10px] text-on-surface-variant uppercase">Tier: Pro Athlete</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label text-xs text-primary-container">08:42 AM</p>
+<span class="inline-block w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+</div>
+</div>
+<!-- Check-in Item -->
+<div class="flex items-center justify-between p-4 bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="person">person</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">Sarah Jenkins</h4>
+<p class="font-label text-[10px] text-on-surface-variant uppercase">Tier: Standard</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label text-xs text-on-surface-variant">08:38 AM</p>
+</div>
+</div>
+<!-- Check-in Item -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="person">person</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-sm text-on-surface uppercase tracking-wider">David Wu</h4>
+<p class="font-label text-[10px] text-on-surface-variant uppercase">Tier: VIP</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label text-xs text-on-surface-variant">08:15 AM</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Revenue Alerts / Stats Sidebar -->
+<div class="space-y-8">
+<div>
+<h3 class="font-headline font-bold text-xl uppercase tracking-widest text-on-surface mb-6 border-b border-outline-variant/20 pb-4">Urgent Tasks</h3>
+<div class="space-y-3">
+<div class="p-4 border-l-4 border-secondary bg-surface-container">
+<p class="font-label text-[10px] text-secondary uppercase tracking-widest mb-1">Payment Failure</p>
+<h5 class="text-sm font-bold text-on-surface uppercase">12 Expired Memberships</h5>
+</div>
+<div class="p-4 border-l-4 border-tertiary bg-surface-container">
+<p class="font-label text-[10px] text-tertiary uppercase tracking-widest mb-1">Equipment</p>
+<h5 class="text-sm font-bold text-on-surface uppercase">Cable Row Maintenance</h5>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-highest p-6 relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 opacity-5">
+<span class="material-symbols-outlined text-9xl font-black" data-icon="bolt">bolt</span>
+</div>
+<h4 class="font-headline font-black text-xs uppercase tracking-[0.3em] text-primary-container mb-4">Elite Membership Goal</h4>
+<p class="font-body text-on-surface-variant text-sm mb-6 leading-relaxed">
+                        Convert <span class="text-on-surface font-bold">18 more</span> standard members to Pro Tier to reach your Q3 performance target.
+                    </p>
+<button class="w-full border border-primary-container text-primary-container font-headline font-bold py-2 text-xs tracking-widest uppercase hover:bg-primary-container hover:text-on-primary-container transition-all">
+                        Launch Campaign
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button for Mobile Context (only if primary screen) -->
+<button class="fixed bottom-6 right-6 md:hidden w-14 h-14 bg-primary-container rounded-sm flex items-center justify-center text-on-primary-container shadow-[0_0_30px_rgba(206,252,34,0.1)] active:scale-90 transition-transform z-50">
+<span class="material-symbols-outlined" data-icon="add" style="font-variation-settings: 'FILL' 0; font-weight: 700;">add</span>
+</button>
+</body></html>
