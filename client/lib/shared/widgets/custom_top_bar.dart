@@ -23,7 +23,8 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   bool get _isDesktop =>
-      !Platform.isAndroid && !Platform.isIOS; // Simple check for window controls
+      !Platform.isAndroid &&
+      !Platform.isIOS; // Simple check for window controls
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,9 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
           color: AppColors.surface,
           border: Border(
             bottom: BorderSide(
-              color: AppColors.outlineVariant.withAlpha(51), // 20% opacity (0.2 * 255 = 51)
+              color: AppColors.outlineVariant.withAlpha(
+                51,
+              ), // 20% opacity (0.2 * 255 = 51)
               width: 1,
             ),
           ),
@@ -64,7 +67,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                         children: [
                           TextSpan(
                             text: firstPart.toUpperCase(),
-                            style: GoogleFonts.lexend(
+                            style: GoogleFonts.roboto(
                               fontSize: 24,
                               fontWeight: FontWeight.w900,
                               color: Colors.white,
@@ -74,10 +77,12 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                           const TextSpan(text: ' '),
                           TextSpan(
                             text: restParts.toUpperCase(),
-                            style: GoogleFonts.lexend(
+                            style: GoogleFonts.roboto(
                               fontSize: 24,
                               fontWeight: FontWeight.w900,
-                              color: AppColors.onSurfaceVariant.withOpacity(0.6),
+                              color: AppColors.onSurfaceVariant.withOpacity(
+                                0.6,
+                              ),
                               fontStyle: FontStyle.italic,
                               letterSpacing: -1.0,
                             ),
@@ -88,7 +93,7 @@ class CustomTopBar extends StatelessWidget implements PreferredSizeWidget {
                   }
                   return Text(
                     title.toUpperCase(),
-                    style: GoogleFonts.lexend(
+                    style: GoogleFonts.roboto(
                       fontSize: 24,
                       fontWeight: FontWeight.w900,
                       color: Colors.white,

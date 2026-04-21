@@ -18,6 +18,17 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// Request Logger
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    const date = new Date().toISOString().replace('T', ' ').split('.')[0];
+    console.log(`[${date}] ${req.method} ${req.originalUrl} ${res.statusCode} - ${duration}ms`);
+  });
+  next();
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/members', memberRoutes);
@@ -28,5 +39,5 @@ app.use('/api/tiers', tierRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '127.0.0.1', () => console.log(`Server running on port ${PORT}`));

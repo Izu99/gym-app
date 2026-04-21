@@ -35,9 +35,12 @@ class ApiMember {
   factory ApiMember.fromJson(Map<String, dynamic> j) {
     PaymentStatus parsePayment(String? s) {
       switch (s) {
-        case 'paid': return PaymentStatus.paid;
-        case 'overdue': return PaymentStatus.overdue;
-        default: return PaymentStatus.pending;
+        case 'paid':
+          return PaymentStatus.paid;
+        case 'overdue':
+          return PaymentStatus.overdue;
+        default:
+          return PaymentStatus.pending;
       }
     }
 
@@ -53,7 +56,11 @@ class ApiMember {
       email: j['email'] ?? '',
       phone: j['phone'],
       tier: extractTierId(j['tier']),
-      tierLabel: j['tierLabel'] ?? (j['tier'] is Map ? j['tier']['name'] : j['tier'] ?? '').toString().toUpperCase(),
+      tierLabel:
+          j['tierLabel'] ??
+          (j['tier'] is Map ? j['tier']['name'] : j['tier'] ?? '')
+              .toString()
+              .toUpperCase(),
       memberSince: j['memberSince'] != null
           ? _formatDate(j['memberSince'])
           : 'Unknown',
@@ -70,8 +77,20 @@ class ApiMember {
   static String _formatDate(String iso) {
     try {
       final d = DateTime.parse(iso);
-      const months = ['Jan','Feb','Mar','Apr','May','Jun',
-                      'Jul','Aug','Sep','Oct','Nov','Dec'];
+      const months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
       return '${months[d.month - 1]} ${d.year}';
     } catch (_) {
       return iso;
@@ -84,8 +103,12 @@ class MembersPage {
   final int total;
   final int page;
   final int pages;
-  const MembersPage({required this.members, required this.total,
-      required this.page, required this.pages});
+  const MembersPage({
+    required this.members,
+    required this.total,
+    required this.page,
+    required this.pages,
+  });
 }
 
 class MemberRepository {
@@ -116,7 +139,10 @@ class MemberRepository {
     return ApiMember.fromJson(data);
   }
 
-  static Future<ApiMember> updateMember(String id, Map<String, dynamic> body) async {
+  static Future<ApiMember> updateMember(
+    String id,
+    Map<String, dynamic> body,
+  ) async {
     final data = await ApiService.patch('/members/$id', body);
     return ApiMember.fromJson(data);
   }

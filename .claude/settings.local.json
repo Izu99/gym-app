@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(netstat -ano)",
+      "Bash(findstr :3000)",
+      "Bash(findstr \":3000\")",
+      "Bash(netsh interface *)",
+      "Bash(findstr \"3000\")",
+      "Bash(node index.js)",
+      "Bash(findstr \":4000\")",
+      "Bash(findstr \"LISTENING\")",
+      "Bash(taskkill *)",
+      "Bash(cmd *)",
+      "Bash(powershell *)"
+    ]
+  }
+}

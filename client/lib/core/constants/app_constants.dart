@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class AppConstants {
   static const double sideNavWidth = 240.0;
   static const double topNavHeight = 64.0;
@@ -12,6 +14,12 @@ class AppConstants {
   static const String routeAttendance = '/attendance';
   static const String routePayments = '/payments';
 
-  // API base — change to your server IP/domain when deploying
-  static const String apiBase = 'http://localhost:3000/api';
+  // Toggle: true = VPS, false = localhost (only affects debug builds)
+  static const bool useVpsInDebug = false;
+
+  static const String _vpsBase = 'http://82.25.180.20/gym/api';
+  static const String _localBase = 'http://localhost:5000/api';
+
+  static String get apiBase =>
+      (!kDebugMode || useVpsInDebug) ? _vpsBase : _localBase;
 }

@@ -19,7 +19,8 @@ class AvatarPlaceholder extends StatelessWidget {
   Widget build(BuildContext context) {
     final isOverdue = paymentStatus == PaymentStatus.overdue;
     return Container(
-      width: size, height: size,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         color: isOverdue
             ? AppColors.error.withOpacity(0.15)
@@ -34,7 +35,7 @@ class AvatarPlaceholder extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         initials,
-        style: GoogleFonts.lexend(
+        style: GoogleFonts.roboto(
           fontSize: size * 0.28,
           fontWeight: FontWeight.w900,
           color: isOverdue ? AppColors.error : AppColors.onSurfaceVariant,

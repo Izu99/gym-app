@@ -2,116 +2,180 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
+/// Centralized Design System for Kinetic Gym App
+class AppStyle {
+  // Border Radius
+  static const double radiusXS = 4.0;
+  static const double radiusS = 8.0;
+  static const double radiusM = 12.0;
+  static const double radiusL = 16.0;
+  static const double radiusXL = 24.0;
+  static const double radiusFull = 999.0;
+
+  // Spacing
+  static const double spaceXS = 4.0;
+  static const double spaceS = 8.0;
+  static const double spaceM = 16.0;
+  static const double spaceL = 24.0;
+  static const double spaceXL = 32.0;
+  static const double spaceXXL = 48.0;
+
+  // Elevation / Shadows
+  static List<BoxShadow> get premiumShadow => [
+    BoxShadow(
+      color: Colors.black.withOpacity(0.4),
+      blurRadius: 20,
+      offset: const Offset(0, 10),
+    ),
+  ];
+
+  static List<BoxShadow> get softShadow => [
+    BoxShadow(
+      color: Colors.black.withOpacity(0.2),
+      blurRadius: 10,
+      offset: const Offset(0, 4),
+    ),
+  ];
+}
+
 class AppTheme {
+  // Brand Font (Change this one variable to swap the entire app font)
+  static final String headerFont = GoogleFonts.roboto().fontFamily!;
+  static final String bodyFont = GoogleFonts.roboto().fontFamily!;
+
   static ThemeData get dark {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: AppColors.surface,
+      scaffoldBackgroundColor: AppColors.background,
+      
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primary,
-        primaryContainer: AppColors.primaryContainer,
         onPrimary: AppColors.onPrimary,
-        onPrimaryContainer: AppColors.onPrimaryContainer,
-        secondary: AppColors.secondary,
-        secondaryContainer: AppColors.secondaryContainer,
-        onSecondary: AppColors.onSecondary,
         surface: AppColors.surface,
-        onSurface: AppColors.onSurface,
+        onSurface: AppColors.textPrimary,
         error: AppColors.error,
-        errorContainer: AppColors.errorContainer,
-        outline: AppColors.outline,
-        outlineVariant: AppColors.outlineVariant,
+        outline: AppColors.border,
       ),
+
+      // Premium Typography Hierarchy
       textTheme: TextTheme(
-        // Display - Lexend
-        displayLarge: GoogleFonts.lexend(
-          fontSize: 56, fontWeight: FontWeight.w900,
-          color: AppColors.onSurface, letterSpacing: -2,
+        displayLarge: TextStyle(
+          fontFamily: headerFont,
+          fontSize: 64,
+          fontWeight: FontWeight.w900,
+          letterSpacing: -2.5,
+          color: AppColors.textPrimary,
         ),
-        displayMedium: GoogleFonts.lexend(
-          fontSize: 40, fontWeight: FontWeight.w900,
-          color: AppColors.onSurface, letterSpacing: -1.5,
+        displayMedium: TextStyle(
+          fontFamily: headerFont,
+          fontSize: 48,
+          fontWeight: FontWeight.w800,
+          letterSpacing: -1.5,
+          color: AppColors.textPrimary,
         ),
-        displaySmall: GoogleFonts.lexend(
-          fontSize: 32, fontWeight: FontWeight.w800,
-          color: AppColors.onSurface, letterSpacing: -1,
+        headlineLarge: TextStyle(
+          fontFamily: headerFont,
+          fontSize: 32,
+          fontWeight: FontWeight.w800,
+          color: AppColors.textPrimary,
         ),
-        // Headline - Lexend
-        headlineLarge: GoogleFonts.lexend(
-          fontSize: 28, fontWeight: FontWeight.w800,
-          color: AppColors.onSurface, letterSpacing: -0.5,
+        headlineMedium: TextStyle(
+          fontFamily: headerFont,
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          color: AppColors.textPrimary,
         ),
-        headlineMedium: GoogleFonts.lexend(
-          fontSize: 22, fontWeight: FontWeight.w700,
-          color: AppColors.onSurface,
+        titleLarge: TextStyle(
+          fontFamily: bodyFont,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textPrimary,
         ),
-        headlineSmall: GoogleFonts.lexend(
-          fontSize: 18, fontWeight: FontWeight.w700,
-          color: AppColors.onSurface,
+        bodyLarge: TextStyle(
+          fontFamily: bodyFont,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textPrimary,
+          height: 1.5,
         ),
-        // Label - Space Grotesk
-        labelLarge: GoogleFonts.spaceGrotesk(
-          fontSize: 14, fontWeight: FontWeight.w700,
-          color: AppColors.onSurface, letterSpacing: 1.5,
+        bodyMedium: TextStyle(
+          fontFamily: bodyFont,
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textSecondary,
         ),
-        labelMedium: GoogleFonts.spaceGrotesk(
-          fontSize: 11, fontWeight: FontWeight.w600,
-          color: AppColors.onSurfaceVariant, letterSpacing: 1.5,
-        ),
-        labelSmall: GoogleFonts.spaceGrotesk(
-          fontSize: 9, fontWeight: FontWeight.w600,
-          color: AppColors.onSurfaceVariant, letterSpacing: 2,
-        ),
-        // Body - Manrope
-        bodyLarge: GoogleFonts.manrope(
-          fontSize: 16, fontWeight: FontWeight.w400,
-          color: AppColors.onSurface,
-        ),
-        bodyMedium: GoogleFonts.manrope(
-          fontSize: 14, fontWeight: FontWeight.w400,
-          color: AppColors.onSurfaceVariant,
-        ),
-        bodySmall: GoogleFonts.manrope(
-          fontSize: 12, fontWeight: FontWeight.w400,
-          color: AppColors.onSurfaceVariant,
+        labelLarge: TextStyle(
+          fontFamily: bodyFont,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 1.2,
+          color: AppColors.primary,
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: AppColors.surfaceContainerHighest,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(2),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(2),
-          borderSide: const BorderSide(
-            color: AppColors.primaryContainer, width: 1,
-          ),
-        ),
-        labelStyle: GoogleFonts.spaceGrotesk(
-          color: AppColors.onSurfaceVariant,
-          fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 2,
-        ),
-        hintStyle: GoogleFonts.spaceGrotesk(
-          color: AppColors.outlineVariant, fontSize: 13,
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-      ),
+
+      // Premium Button Design
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryContainer,
-          foregroundColor: AppColors.onPrimaryContainer,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-          textStyle: GoogleFonts.lexend(
-            fontWeight: FontWeight.w900, letterSpacing: 2, fontSize: 13,
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.onPrimary,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppStyle.radiusS),
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppStyle.spaceL,
+            vertical: AppStyle.spaceM,
+          ),
+          textStyle: TextStyle(
+            fontFamily: headerFont,
+            fontWeight: FontWeight.w800,
+            fontSize: 14,
           ),
         ),
       ),
+
+      // Modern Input Fields
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.surfaceLight,
+        contentPadding: const EdgeInsets.all(AppStyle.spaceM),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppStyle.radiusS),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppStyle.radiusS),
+          borderSide: const BorderSide(color: AppColors.border, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppStyle.radiusS),
+          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+        ),
+        labelStyle: TextStyle(
+          fontFamily: bodyFont,
+          color: AppColors.textSecondary,
+        ),
+        hintStyle: TextStyle(
+          fontFamily: bodyFont,
+          color: AppColors.textMuted,
+        ),
+      ),
+
+      // Card Design
+      cardTheme: CardThemeData(
+        color: AppColors.surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppStyle.radiusM),
+          side: const BorderSide(color: AppColors.border, width: 1),
+        ),
+      ),
+      
       dividerTheme: const DividerThemeData(
-        color: Color(0x1A484847), thickness: 1,
+        color: AppColors.border,
+        thickness: 1,
+        space: 1,
       ),
     );
   }

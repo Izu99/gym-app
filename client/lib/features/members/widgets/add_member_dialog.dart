@@ -20,7 +20,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
   final _nameCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
-  
+
   List<Tier> _tiers = [];
   Tier? _selectedTier;
   bool _loading = false;
@@ -38,13 +38,17 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
       final tiers = await TierRepository.getTiers();
       if (mounted) {
         setState(() {
-          _tiers = tiers;
+          _tiers = tiers.where((tier) => !tier.isArchived).toList();
           if (_tiers.isNotEmpty) _selectedTier = _tiers.first;
           _initialLoading = false;
         });
       }
     } catch (e) {
-      if (mounted) setState(() { _error = e.toString(); _initialLoading = false; });
+      if (mounted)
+        setState(() {
+          _error = e.toString();
+          _initialLoading = false;
+        });
     }
   }
 
@@ -104,183 +108,223 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 500),
-        child: _initialLoading 
-          ? const SizedBox(height: 300, child: Center(child: CircularProgressIndicator()))
-          : SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header
-              CustomTopBar(
-                title: 'NEW MEMBER',
-                onClose: () => Navigator.pop(context),
-                showWindowControls: false,
-              ),
+        child: _initialLoading
+            ? const SizedBox(
+                height: 300,
+                child: Center(child: CircularProgressIndicator()),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header
+                    CustomTopBar(
+                      title: 'NEW MEMBER',
+                      onClose: () => Navigator.pop(context),
+                      showWindowControls: false,
+                    ),
 
-              Padding(
-                padding: const EdgeInsets.all(32),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (_error != null) ...[
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          margin: const EdgeInsets.only(bottom: 24),
-                          color: AppColors.errorContainer,
-                          width: double.infinity,
-                          child: Text(_error!,
-                              style: GoogleFonts.manrope(
-                                fontSize: 12,
-                                color: AppColors.onErrorContainer,
-                              )),
-                        ),
-                      ],
-
-                      _label('FULL NAME'),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        controller: _nameCtrl,
-                        style: GoogleFonts.manrope(
-                            color: AppColors.onSurface, fontSize: 14),
-                        decoration: const InputDecoration(
-                          hintText: 'e.g. John Wick',
-                          prefixIcon: Icon(Icons.person_outline, size: 20),
-                        ),
-                        validator: (v) =>
-                            v == null || v.isEmpty ? 'Required' : null,
-                      ),
-                      const SizedBox(height: 24),
-
-                      _label('WORK EMAIL'),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        controller: _emailCtrl,
-                        keyboardType: TextInputType.emailAddress,
-                        style: GoogleFonts.manrope(
-                            color: AppColors.onSurface, fontSize: 14),
-                        decoration: const InputDecoration(
-                          hintText: 'john@example.com',
-                          prefixIcon: Icon(Icons.email_outlined, size: 20),
-                        ),
-                        validator: (v) =>
-                            v == null || v.isEmpty ? 'Required' : null,
-                      ),
-                      const SizedBox(height: 24),
-
-                      _label('PHONE NUMBER'),
-                      const SizedBox(height: 8),
-                      TextFormField(
-                        controller: _phoneCtrl,
-                        keyboardType: TextInputType.phone,
-                        style: GoogleFonts.manrope(
-                            color: AppColors.onSurface, fontSize: 14),
-                        decoration: const InputDecoration(
-                          hintText: '+94 77 123 4567',
-                          prefixIcon: Icon(Icons.phone_outlined, size: 20),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-
-                      _label('MEMBERSHIP TIER'),
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 12,
-                        runSpacing: 12,
-                        children: _tiers.map((t) {
-                          final isActive = _selectedTier?.id == t.id;
-                          return InkWell(
-                            onTap: () => setState(() => _selectedTier = t),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 10),
-                              decoration: BoxDecoration(
-                                color: isActive
-                                    ? AppColors.primaryContainer
-                                    : AppColors.surfaceContainerHighest,
-                                border: Border.all(
-                                  color: isActive
-                                      ? AppColors.primaryContainer
-                                      : AppColors.outlineVariant
-                                          .withOpacity(0.2),
+                    Padding(
+                      padding: const EdgeInsets.all(32),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (_error != null) ...[
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                margin: const EdgeInsets.only(bottom: 24),
+                                color: AppColors.errorContainer,
+                                width: double.infinity,
+                                child: Text(
+                                  _error!,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 12,
+                                    color: AppColors.onErrorContainer,
+                                  ),
                                 ),
                               ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    t.name.toUpperCase(),
-                                    style: GoogleFonts.spaceGrotesk(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                      color: isActive
-                                          ? AppColors.onPrimaryContainer
-                                          : AppColors.onSurfaceVariant,
-                                      letterSpacing: 1,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Rs.${t.monthlyFee.toStringAsFixed(0)}',
-                                    style: GoogleFonts.manrope(
-                                      fontSize: 8,
-                                      color: isActive
-                                          ? AppColors.onPrimaryContainer.withOpacity(0.7)
-                                          : AppColors.onSurfaceVariant.withOpacity(0.7),
-                                    ),
-                                  ),
-                                ],
+                            ],
+
+                            _label('FULL NAME'),
+                            const SizedBox(height: 8),
+                            TextFormField(
+                              controller: _nameCtrl,
+                              style: GoogleFonts.roboto(
+                                color: AppColors.onSurface,
+                                fontSize: 14,
+                              ),
+                              decoration: const InputDecoration(
+                                hintText: 'e.g. John Wick',
+                                prefixIcon: Icon(
+                                  Icons.person_outline,
+                                  size: 20,
+                                ),
+                              ),
+                              validator: (v) =>
+                                  v == null || v.isEmpty ? 'Required' : null,
+                            ),
+                            const SizedBox(height: 24),
+
+                            _label('WORK EMAIL'),
+                            const SizedBox(height: 8),
+                            TextFormField(
+                              controller: _emailCtrl,
+                              keyboardType: TextInputType.emailAddress,
+                              style: GoogleFonts.roboto(
+                                color: AppColors.onSurface,
+                                fontSize: 14,
+                              ),
+                              decoration: const InputDecoration(
+                                hintText: 'john@example.com',
+                                prefixIcon: Icon(
+                                  Icons.email_outlined,
+                                  size: 20,
+                                ),
+                              ),
+                              validator: (v) =>
+                                  v == null || v.isEmpty ? 'Required' : null,
+                            ),
+                            const SizedBox(height: 24),
+
+                            _label('PHONE NUMBER'),
+                            const SizedBox(height: 8),
+                            TextFormField(
+                              controller: _phoneCtrl,
+                              keyboardType: TextInputType.phone,
+                              style: GoogleFonts.roboto(
+                                color: AppColors.onSurface,
+                                fontSize: 14,
+                              ),
+                              decoration: const InputDecoration(
+                                hintText: '+94 77 123 4567',
+                                prefixIcon: Icon(
+                                  Icons.phone_outlined,
+                                  size: 20,
+                                ),
                               ),
                             ),
-                          );
-                        }).toList(),
-                      ),
+                            const SizedBox(height: 24),
 
-                      const SizedBox(height: 48),
+                            _label('MEMBERSHIP TIER'),
+                            const SizedBox(height: 12),
+                            if (_tiers.isEmpty)
+                              Text(
+                                'No active packages available. Create a package first.',
+                                style: GoogleFonts.roboto(
+                                  fontSize: 12,
+                                  color: AppColors.error,
+                                ),
+                              )
+                            else
+                            Wrap(
+                              spacing: 12,
+                              runSpacing: 12,
+                              children: _tiers.map((t) {
+                                final isActive = _selectedTier?.id == t.id;
+                                return InkWell(
+                                  onTap: () =>
+                                      setState(() => _selectedTier = t),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 10,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: isActive
+                                          ? AppColors.primaryContainer
+                                          : AppColors.surfaceContainerHighest,
+                                      border: Border.all(
+                                        color: isActive
+                                            ? AppColors.primaryContainer
+                                            : AppColors.outlineVariant
+                                                  .withOpacity(0.2),
+                                      ),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          t.name.toUpperCase(),
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w700,
+                                            color: isActive
+                                                ? AppColors.onPrimaryContainer
+                                                : AppColors.onSurfaceVariant,
+                                            letterSpacing: 1,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Rs.${t.monthlyFee.toStringAsFixed(0)}',
+                                          style: GoogleFonts.roboto(
+                                            fontSize: 8,
+                                            color: isActive
+                                                ? AppColors.onPrimaryContainer
+                                                      .withOpacity(0.7)
+                                                : AppColors.onSurfaceVariant
+                                                      .withOpacity(0.7),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
 
-                      SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: _loading ? null : _submit,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryContainer,
-                            foregroundColor: AppColors.onPrimaryContainer,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero),
-                          ),
-                          child: _loading
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: AppColors.onPrimaryContainer,
-                                  ))
-                              : Text('INITIALIZE PROTOCOL',
-                                  style: GoogleFonts.lexend(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 2,
-                                  )),
+                            const SizedBox(height: 48),
+
+                            SizedBox(
+                              width: double.infinity,
+                              height: 56,
+                              child: ElevatedButton(
+                                onPressed: _loading ? null : _submit,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primaryContainer,
+                                  foregroundColor: AppColors.onPrimaryContainer,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                ),
+                                child: _loading
+                                    ? const SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: AppColors.onPrimaryContainer,
+                                        ),
+                                      )
+                                    : Text(
+                                        'INITIALIZE PROTOCOL',
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w900,
+                                          letterSpacing: 2,
+                                        ),
+                                      ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
 
-  Widget _label(String text) => Text(text,
-      style: GoogleFonts.spaceGrotesk(
-        fontSize: 9,
-        fontWeight: FontWeight.w700,
-        color: AppColors.onSurfaceVariant,
-        letterSpacing: 2.5,
-      ));
+  Widget _label(String text) => Text(
+    text,
+    style: GoogleFonts.roboto(
+      fontSize: 9,
+      fontWeight: FontWeight.w700,
+      color: AppColors.onSurfaceVariant,
+      letterSpacing: 2.5,
+    ),
+  );
 }

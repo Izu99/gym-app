@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 exports.getMembers = async (req, res) => {
   try {
     const { status, tier, page = 1, limit = 20, search } = req.query;
-    const filter = { owner: req.user.id };
+    const filter = { owner: req.user.id, isActive: true };
     
     // We handle 'overdue' filter specifically since it depends on Payment data
     if (status && status !== 'overdue') filter.paymentStatus = status;
@@ -102,13 +102,17 @@ exports.updateMember = async (req, res) => {
   }
 };
 
-// @desc    Delete member
+// @desc    Delete member (Soft Delete)
 // @route   DELETE /api/members/:id
 exports.deleteMember = async (req, res) => {
   try {
-    const member = await Member.findOneAndDelete({ _id: req.params.id, owner: req.user.id });
+    const member = await Member.findOneAndUpdate(
+      { _id: req.params.id, owner: req.user.id },
+      { isActive: false },
+      { new: true }
+    );
     if (!member) return res.status(404).json({ error: 'Member not found' });
-    res.json({ message: 'Member deleted' });
+    res.json({ message: 'Member deactivated', member });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

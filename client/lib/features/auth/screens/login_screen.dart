@@ -30,11 +30,13 @@ class _LoginScreenState extends State<LoginScreen>
   void initState() {
     super.initState();
     _animCtrl = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 800),
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
     );
     _fadeAnim = CurvedAnimation(parent: _animCtrl, curve: Curves.easeOut);
     _slideAnim = Tween<Offset>(
-      begin: const Offset(0, 0.06), end: Offset.zero,
+      begin: const Offset(0, 0.06),
+      end: Offset.zero,
     ).animate(CurvedAnimation(parent: _animCtrl, curve: Curves.easeOutExpo));
     _animCtrl.forward();
   }
@@ -54,18 +56,26 @@ class _LoginScreenState extends State<LoginScreen>
       setState(() => _error = 'Please enter email and password');
       return;
     }
-    setState(() { _loading = true; _error = null; });
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
     try {
       await AuthService.login(email, password);
       if (mounted) context.go(AppConstants.routeDashboard);
     } catch (e) {
-      if (mounted) setState(() { _error = e.toString(); _loading = false; });
+      if (mounted)
+        setState(() {
+          _error = e.toString();
+          _loading = false;
+        });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = MediaQuery.of(context).size.width >= AppConstants.mobileBreakpoint;
+    final isDesktop =
+        MediaQuery.of(context).size.width >= AppConstants.mobileBreakpoint;
 
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -73,36 +83,48 @@ class _LoginScreenState extends State<LoginScreen>
       body: Stack(
         children: [
           Positioned(
-            bottom: -96, right: -96,
+            bottom: -96,
+            right: -96,
             child: Container(
-              width: 256, height: 256,
+              width: 256,
+              height: 256,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                boxShadow: [BoxShadow(
-                  color: AppColors.primaryContainer.withOpacity(0.08),
-                  blurRadius: 100, spreadRadius: 40,
-                )],
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primaryContainer.withOpacity(0.08),
+                    blurRadius: 100,
+                    spreadRadius: 40,
+                  ),
+                ],
               ),
             ),
           ),
           Positioned(
-            top: -96, left: -96,
+            top: -96,
+            left: -96,
             child: Container(
-              width: 256, height: 256,
+              width: 256,
+              height: 256,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                boxShadow: [BoxShadow(
-                  color: AppColors.secondary.withOpacity(0.04),
-                  blurRadius: 80, spreadRadius: 30,
-                )],
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.secondary.withOpacity(0.04),
+                    blurRadius: 80,
+                    spreadRadius: 30,
+                  ),
+                ],
               ),
             ),
           ),
           if (isDesktop)
-            Row(children: [
-              Expanded(flex: 7, child: _BrandingPanel()),
-              Expanded(flex: 5, child: _buildFormPanel(context)),
-            ])
+            Row(
+              children: [
+                Expanded(flex: 7, child: _BrandingPanel()),
+                Expanded(flex: 5, child: _buildFormPanel(context)),
+              ],
+            )
           else
             _buildFormPanel(context),
         ],
@@ -125,20 +147,28 @@ class _LoginScreenState extends State<LoginScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (MediaQuery.of(context).size.width < AppConstants.mobileBreakpoint) ...[
+                    if (MediaQuery.of(context).size.width <
+                        AppConstants.mobileBreakpoint) ...[
                       const KineticLogo(fontSize: 36),
                       const SizedBox(height: 40),
                     ],
-                    Text('SYSTEM LOGIN',
-                      style: GoogleFonts.lexend(
-                        fontSize: 28, fontWeight: FontWeight.w900,
-                        color: AppColors.onSurface, letterSpacing: -0.5,
-                      )),
+                    Text(
+                      'SYSTEM LOGIN',
+                      style: GoogleFonts.roboto(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.onSurface,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
                     const SizedBox(height: 8),
-                    Text('Enter your credentials to access the command center.',
-                      style: GoogleFonts.manrope(
-                        fontSize: 14, color: AppColors.onSurfaceVariant,
-                      )),
+                    Text(
+                      'Enter your credentials to access the command center.',
+                      style: GoogleFonts.roboto(
+                        fontSize: 14,
+                        color: AppColors.onSurfaceVariant,
+                      ),
+                    ),
                     const SizedBox(height: 40),
 
                     _FieldLabel('OWNER ID / EMAIL'),
@@ -146,11 +176,17 @@ class _LoginScreenState extends State<LoginScreen>
                     TextField(
                       controller: _emailCtrl,
                       keyboardType: TextInputType.emailAddress,
-                      style: GoogleFonts.manrope(color: AppColors.onSurface, fontSize: 14),
+                      style: GoogleFonts.roboto(
+                        color: AppColors.onSurface,
+                        fontSize: 14,
+                      ),
                       decoration: const InputDecoration(
                         hintText: 'owner@ironpulse.gym',
-                        prefixIcon: Icon(Icons.person_outline,
-                            color: AppColors.onSurfaceVariant, size: 20),
+                        prefixIcon: Icon(
+                          Icons.person_outline,
+                          color: AppColors.onSurfaceVariant,
+                          size: 20,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -162,13 +198,18 @@ class _LoginScreenState extends State<LoginScreen>
                         TextButton(
                           onPressed: () {},
                           style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero, minimumSize: Size.zero,
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
                           ),
-                          child: Text('FORGOT KEY?',
-                            style: GoogleFonts.spaceGrotesk(
-                              fontSize: 9, fontWeight: FontWeight.w700,
-                              color: AppColors.primary, letterSpacing: 2,
-                            )),
+                          child: Text(
+                            'FORGOT KEY?',
+                            style: GoogleFonts.roboto(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primary,
+                              letterSpacing: 2,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -176,17 +217,26 @@ class _LoginScreenState extends State<LoginScreen>
                     TextField(
                       controller: _passCtrl,
                       obscureText: _obscure,
-                      style: GoogleFonts.manrope(color: AppColors.onSurface, fontSize: 14),
+                      style: GoogleFonts.roboto(
+                        color: AppColors.onSurface,
+                        fontSize: 14,
+                      ),
                       onSubmitted: (_) => _login(),
                       decoration: InputDecoration(
                         hintText: '••••••••••••',
-                        prefixIcon: const Icon(Icons.lock_outline,
-                            color: AppColors.onSurfaceVariant, size: 20),
+                        prefixIcon: const Icon(
+                          Icons.lock_outline,
+                          color: AppColors.onSurfaceVariant,
+                          size: 20,
+                        ),
                         suffixIcon: IconButton(
                           onPressed: () => setState(() => _obscure = !_obscure),
                           icon: Icon(
-                            _obscure ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                            color: AppColors.outlineVariant, size: 20,
+                            _obscure
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: AppColors.outlineVariant,
+                            size: 20,
                           ),
                         ),
                       ),
@@ -195,18 +245,27 @@ class _LoginScreenState extends State<LoginScreen>
                     if (_error != null) ...[
                       const SizedBox(height: 12),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
                         color: AppColors.errorContainer,
                         child: Row(
                           children: [
-                            const Icon(Icons.error_outline,
-                                color: AppColors.onErrorContainer, size: 16),
+                            const Icon(
+                              Icons.error_outline,
+                              color: AppColors.onErrorContainer,
+                              size: 16,
+                            ),
                             const SizedBox(width: 8),
                             Expanded(
-                              child: Text(_error!,
-                                style: GoogleFonts.manrope(
-                                  fontSize: 12, color: AppColors.onErrorContainer,
-                                )),
+                              child: Text(
+                                _error!,
+                                style: GoogleFonts.roboto(
+                                  fontSize: 12,
+                                  color: AppColors.onErrorContainer,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -217,50 +276,71 @@ class _LoginScreenState extends State<LoginScreen>
                     Row(
                       children: [
                         SizedBox(
-                          width: 18, height: 18,
+                          width: 18,
+                          height: 18,
                           child: Checkbox(
                             value: _remember,
                             onChanged: (v) => setState(() => _remember = v!),
                             activeColor: AppColors.primaryContainer,
                             checkColor: AppColors.onPrimaryContainer,
-                            side: const BorderSide(color: AppColors.outlineVariant, width: 1.5),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                            side: const BorderSide(
+                              color: AppColors.outlineVariant,
+                              width: 1.5,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 10),
-                        Text('REMEMBER THIS TERMINAL',
-                          style: GoogleFonts.spaceGrotesk(
-                            fontSize: 9, fontWeight: FontWeight.w700,
-                            color: AppColors.onSurfaceVariant, letterSpacing: 2,
-                          )),
+                        Text(
+                          'REMEMBER THIS TERMINAL',
+                          style: GoogleFonts.roboto(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.onSurfaceVariant,
+                            letterSpacing: 2,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 32),
 
                     SizedBox(
-                      width: double.infinity, height: 56,
+                      width: double.infinity,
+                      height: 56,
                       child: ElevatedButton(
                         onPressed: _loading ? null : _login,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryContainer,
                           foregroundColor: AppColors.onPrimaryContainer,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
-                          disabledBackgroundColor: AppColors.primaryContainer.withOpacity(0.7),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                          disabledBackgroundColor: AppColors.primaryContainer
+                              .withOpacity(0.7),
                         ),
                         child: _loading
                             ? const SizedBox(
-                                width: 20, height: 20,
+                                width: 20,
+                                height: 20,
                                 child: CircularProgressIndicator(
-                                  strokeWidth: 2, color: AppColors.onPrimaryContainer,
-                                ))
+                                  strokeWidth: 2,
+                                  color: AppColors.onPrimaryContainer,
+                                ),
+                              )
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('AUTHORIZE ACCESS',
-                                    style: GoogleFonts.lexend(
-                                      fontSize: 13, fontWeight: FontWeight.w900,
-                                      letterSpacing: 2, color: AppColors.onPrimaryContainer,
-                                    )),
+                                  Text(
+                                    'AUTHORIZE ACCESS',
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: 2,
+                                      color: AppColors.onPrimaryContainer,
+                                    ),
+                                  ),
                                   const SizedBox(width: 10),
                                   const Icon(Icons.arrow_forward, size: 18),
                                 ],
@@ -270,12 +350,17 @@ class _LoginScreenState extends State<LoginScreen>
                     const SizedBox(height: 24),
                     Center(
                       child: TextButton(
-                        onPressed: () => context.push(AppConstants.routeRegister),
-                        child: Text('DON\'T HAVE AN ACCOUNT? REGISTER',
-                          style: GoogleFonts.spaceGrotesk(
-                            fontSize: 10, fontWeight: FontWeight.w700,
-                            color: AppColors.primary, letterSpacing: 1.5,
-                          )),
+                        onPressed: () =>
+                            context.push(AppConstants.routeRegister),
+                        child: Text(
+                          'DON\'T HAVE AN ACCOUNT? REGISTER',
+                          style: GoogleFonts.roboto(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primary,
+                            letterSpacing: 1.5,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 48),
@@ -284,15 +369,21 @@ class _LoginScreenState extends State<LoginScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('© 2024 IRON PULSE NETWORKS',
-                          style: GoogleFonts.spaceGrotesk(
-                            fontSize: 8, color: AppColors.outlineVariant, letterSpacing: 2,
-                          )),
-                        Row(children: [
-                          _FooterLink('SUPPORT'),
-                          const SizedBox(width: 16),
-                          _FooterLink('PRIVACY'),
-                        ]),
+                        Text(
+                          '© 2024 IRON PULSE NETWORKS',
+                          style: GoogleFonts.roboto(
+                            fontSize: 8,
+                            color: AppColors.outlineVariant,
+                            letterSpacing: 2,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            _FooterLink('SUPPORT'),
+                            const SizedBox(width: 16),
+                            _FooterLink('PRIVACY'),
+                          ],
+                        ),
                       ],
                     ),
                   ],
@@ -312,7 +403,8 @@ class _BrandingPanel extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft, end: Alignment.bottomRight,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
           colors: [Color(0xFF131313), Color(0xFF000000)],
         ),
         border: Border(right: BorderSide(color: Color(0x1A484847))),
@@ -325,7 +417,8 @@ class _BrandingPanel extends StatelessWidget {
               child: Container(
                 decoration: const BoxDecoration(
                   gradient: RadialGradient(
-                    center: Alignment.topRight, radius: 1.5,
+                    center: Alignment.topRight,
+                    radius: 1.5,
                     colors: [AppColors.primaryContainer, Colors.transparent],
                   ),
                 ),
@@ -338,27 +431,41 @@ class _BrandingPanel extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('KINETIC',
-                  style: GoogleFonts.lexend(
-                    fontSize: 96, fontWeight: FontWeight.w900,
+                Text(
+                  'KINETIC',
+                  style: GoogleFonts.roboto(
+                    fontSize: 96,
+                    fontWeight: FontWeight.w900,
                     color: AppColors.primaryContainer,
-                    fontStyle: FontStyle.italic, letterSpacing: -4, height: 0.9,
-                  )),
+                    fontStyle: FontStyle.italic,
+                    letterSpacing: -4,
+                    height: 0.9,
+                  ),
+                ),
                 Container(
-                  width: 96, height: 8, color: AppColors.secondary,
+                  width: 96,
+                  height: 8,
+                  color: AppColors.secondary,
                   margin: const EdgeInsets.symmetric(vertical: 24),
                 ),
-                Text('ELITE PERFORMANCE\nMANAGEMENT ',
-                  style: GoogleFonts.lexend(
-                    fontSize: 36, fontWeight: FontWeight.w700,
-                    color: AppColors.onSurface, letterSpacing: -1, height: 1.1,
-                  )),
+                Text(
+                  'ELITE PERFORMANCE\nMANAGEMENT ',
+                  style: GoogleFonts.roboto(
+                    fontSize: 36,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.onSurface,
+                    letterSpacing: -1,
+                    height: 1.1,
+                  ),
+                ),
                 RichText(
                   text: TextSpan(
                     text: 'ENGINEERED.',
-                    style: GoogleFonts.lexend(
-                      fontSize: 36, fontWeight: FontWeight.w700,
-                      color: AppColors.secondary, letterSpacing: -1,
+                    style: GoogleFonts.roboto(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.secondary,
+                      letterSpacing: -1,
                     ),
                   ),
                 ),
@@ -366,14 +473,19 @@ class _BrandingPanel extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 32, left: 32,
+            bottom: 32,
+            left: 32,
             child: RotatedBox(
               quarterTurns: 3,
-              child: Text('IRON PULSE DIGITAL ECOSYSTEM',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 8, color: AppColors.outlineVariant,
-                  letterSpacing: 5, fontWeight: FontWeight.w600,
-                )),
+              child: Text(
+                'IRON PULSE DIGITAL ECOSYSTEM',
+                style: GoogleFonts.roboto(
+                  fontSize: 8,
+                  color: AppColors.outlineVariant,
+                  letterSpacing: 5,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ),
         ],
@@ -386,19 +498,27 @@ class _FieldLabel extends StatelessWidget {
   final String text;
   const _FieldLabel(this.text);
   @override
-  Widget build(BuildContext context) => Text(text,
-    style: GoogleFonts.spaceGrotesk(
-      fontSize: 9, fontWeight: FontWeight.w700,
-      color: AppColors.onSurfaceVariant, letterSpacing: 2.5,
-    ));
+  Widget build(BuildContext context) => Text(
+    text,
+    style: GoogleFonts.roboto(
+      fontSize: 9,
+      fontWeight: FontWeight.w700,
+      color: AppColors.onSurfaceVariant,
+      letterSpacing: 2.5,
+    ),
+  );
 }
 
 class _FooterLink extends StatelessWidget {
   final String text;
   const _FooterLink(this.text);
   @override
-  Widget build(BuildContext context) => Text(text,
-    style: GoogleFonts.spaceGrotesk(
-      fontSize: 8, color: AppColors.onSurfaceVariant, letterSpacing: 2,
-    ));
+  Widget build(BuildContext context) => Text(
+    text,
+    style: GoogleFonts.roboto(
+      fontSize: 8,
+      color: AppColors.onSurfaceVariant,
+      letterSpacing: 2,
+    ),
+  );
 }

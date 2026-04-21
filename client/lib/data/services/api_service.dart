@@ -6,12 +6,14 @@ import 'auth_service.dart';
 class ApiService {
   static Map<String, String> get _headers => {
     'Content-Type': 'application/json',
-    if (AuthService.token != null) 'Authorization': 'Bearer ${AuthService.token}',
+    if (AuthService.token != null)
+      'Authorization': 'Bearer ${AuthService.token}',
   };
 
   static Future<dynamic> get(String path, {Map<String, String>? query}) async {
-    final uri = Uri.parse('${AppConstants.apiBase}$path')
-        .replace(queryParameters: query);
+    final uri = Uri.parse(
+      '${AppConstants.apiBase}$path',
+    ).replace(queryParameters: query);
     final res = await http.get(uri, headers: _headers);
     return _handle(res);
   }
@@ -25,7 +27,10 @@ class ApiService {
     return _handle(res);
   }
 
-  static Future<dynamic> patch(String path, [Map<String, dynamic>? body]) async {
+  static Future<dynamic> patch(
+    String path, [
+    Map<String, dynamic>? body,
+  ]) async {
     final res = await http.patch(
       Uri.parse('${AppConstants.apiBase}$path'),
       headers: _headers,

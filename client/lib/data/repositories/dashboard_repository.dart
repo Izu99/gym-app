@@ -37,21 +37,26 @@ class TierBreakdown {
   final String tierId;
   final String tier;
   final int count;
-  const TierBreakdown({required this.tierId, required this.tier, required this.count});
-  factory TierBreakdown.fromJson(Map<String, dynamic> j) =>
-      TierBreakdown(
-        tierId: j['_id'] ?? '',
-        tier: j['tier'] ?? 'Unknown',
-        count: j['count'] ?? 0,
-      );
+  const TierBreakdown({
+    required this.tierId,
+    required this.tier,
+    required this.count,
+  });
+  factory TierBreakdown.fromJson(Map<String, dynamic> j) => TierBreakdown(
+    tierId: j['_id'] ?? '',
+    tier: j['tier'] ?? 'Unknown',
+    count: j['count'] ?? 0,
+  );
 }
 
 class DailyRevenue {
   final String date;
   final double revenue;
   const DailyRevenue({required this.date, required this.revenue});
-  factory DailyRevenue.fromJson(Map<String, dynamic> j) =>
-      DailyRevenue(date: j['_id'] ?? '', revenue: (j['revenue'] ?? 0).toDouble());
+  factory DailyRevenue.fromJson(Map<String, dynamic> j) => DailyRevenue(
+    date: j['_id'] ?? '',
+    revenue: (j['revenue'] ?? 0).toDouble(),
+  );
 }
 
 class AttendanceStat {
@@ -79,8 +84,9 @@ class DashboardRepository {
   }
 
   static Future<List<AttendanceStat>> getAttendanceStats({int days = 7}) async {
-    final data = await ApiService.get('/attendance/stats',
-        query: {'days': '$days'}) as List;
+    final data =
+        await ApiService.get('/attendance/stats', query: {'days': '$days'})
+            as List;
     return data.map((e) => AttendanceStat.fromJson(e)).toList();
   }
 }

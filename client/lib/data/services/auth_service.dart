@@ -21,7 +21,10 @@ class AuthService {
     if (userJson != null) _user = jsonDecode(userJson);
   }
 
-  static Future<Map<String, dynamic>> login(String email, String password) async {
+  static Future<Map<String, dynamic>> login(
+    String email,
+    String password,
+  ) async {
     final res = await http.post(
       Uri.parse('${AppConstants.apiBase}/auth/login'),
       headers: {'Content-Type': 'application/json'},

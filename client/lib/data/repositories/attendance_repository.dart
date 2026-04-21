@@ -52,7 +52,9 @@ class ApiAttendanceRecord {
       tierLabel: tierLabel,
       paymentStatus: _parsePaymentStatus(member['paymentStatus']),
       email: member['email'],
-      status: json['status'] == 'present' ? AttendanceStatus.present : AttendanceStatus.absent,
+      status: json['status'] == 'present'
+          ? AttendanceStatus.present
+          : AttendanceStatus.absent,
       checkinTime: json['checkinTime'],
       session: json['session'],
     );
@@ -71,7 +73,70 @@ class AttendancePage {
   final int page;
   final int pages;
 
-  AttendancePage({required this.records, required this.total, required this.page, required this.pages});
+  AttendancePage({
+    required this.records,
+    required this.total,
+    required this.page,
+    required this.pages,
+  });
+}
+
+class MemberAttendanceCalendarDay {
+  final DateTime date;
+  final AttendanceStatus status;
+  final String? session;
+  final String? checkinTime;
+
+  const MemberAttendanceCalendarDay({
+    required this.date,
+    required this.status,
+    this.session,
+    this.checkinTime,
+  });
+
+  factory MemberAttendanceCalendarDay.fromJson(Map<String, dynamic> json) {
+    final rawStatus = (json['status'] ?? 'absent').toString();
+    return MemberAttendanceCalendarDay(
+      date: DateTime.parse(json['date'].toString()),
+      status: rawStatus == 'present'
+          ? AttendanceStatus.present
+          : rawStatus == 'pending'
+          ? AttendanceStatus.pending
+          : AttendanceStatus.absent,
+      session: json['session']?.toString(),
+      checkinTime: json['checkinTime']?.toString(),
+    );
+  }
+}
+
+class MemberAttendanceCalendar {
+  final String memberId;
+  final String memberName;
+  final String memberInitials;
+  final String month;
+  final List<MemberAttendanceCalendarDay> records;
+
+  const MemberAttendanceCalendar({
+    required this.memberId,
+    required this.memberName,
+    required this.memberInitials,
+    required this.month,
+    required this.records,
+  });
+
+  factory MemberAttendanceCalendar.fromJson(Map<String, dynamic> json) {
+    final member = json['member'] as Map<String, dynamic>? ?? {};
+    final records = (json['records'] as List? ?? [])
+        .map((entry) => MemberAttendanceCalendarDay.fromJson(entry))
+        .toList();
+    return MemberAttendanceCalendar(
+      memberId: member['id']?.toString() ?? '',
+      memberName: member['name']?.toString() ?? 'Unknown',
+      memberInitials: member['initials']?.toString() ?? '??',
+      month: json['month']?.toString() ?? '',
+      records: records,
+    );
+  }
 }
 
 class AttendanceRepository {
@@ -97,7 +162,8 @@ class AttendanceRepository {
 
   static Future<List<ApiAttendanceRecord>> getTodayAttendance() async {
     final today = DateTime.now();
-    final dateStr = '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+    final dateStr =
+        '${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
     final page = await getAttendance(date: dateStr, limit: 100);
     return page.records;
   }
@@ -116,5 +182,18 @@ class AttendanceRepository {
       if (session != null) 'session': session,
     });
     return ApiAttendanceRecord.fromJson(data);
+  }
+
+  static Future<MemberAttendanceCalendar> getMemberCalendar({
+    required String memberId,
+    required DateTime month,
+  }) async {
+    final monthStr =
+        '${month.year}-${month.month.toString().padLeft(2, '0')}';
+    final data = await ApiService.get(
+      '/attendance/member-calendar',
+      query: {'memberId': memberId, 'month': monthStr},
+    );
+    return MemberAttendanceCalendar.fromJson(data);
   }
 }

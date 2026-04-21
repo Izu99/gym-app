@@ -1,4 +1,5 @@
 enum PaymentStatus { paid, overdue, pending }
+
 enum AttendanceStatus { present, absent, pending }
 
 class Member {

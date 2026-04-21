@@ -7,18 +7,13 @@ import '../widgets/kinetic_logo.dart';
 import '../../core/services/data_sync_controller.dart';
 import '../../features/members/widgets/add_member_dialog.dart';
 import '../../data/services/auth_service.dart';
-
 import '../widgets/custom_top_bar.dart';
 
 class AppShell extends StatefulWidget {
   final Widget child;
   final String currentRoute;
 
-  const AppShell({
-    super.key,
-    required this.child,
-    required this.currentRoute,
-  });
+  const AppShell({super.key, required this.child, required this.currentRoute});
 
   @override
   State<AppShell> createState() => _AppShellState();
@@ -44,10 +39,23 @@ class _AppShellState extends State<AppShell> {
     if (mounted) context.go(AppConstants.routeLogin);
   }
 
+  void _forceRefresh(BuildContext context) {
+    dataSync.forceRefreshAll();
+    GoRouter.of(context).refresh();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Synced latest data from backend')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isDesktop = MediaQuery.of(context).size.width >= AppConstants.mobileBreakpoint;
-    final String routeName = widget.currentRoute.split('/').last.replaceAll('_', ' ').toUpperCase();
+    final isDesktop =
+        MediaQuery.of(context).size.width >= AppConstants.mobileBreakpoint;
+    final String routeName = widget.currentRoute
+        .split('/')
+        .last
+        .replaceAll('_', ' ')
+        .toUpperCase();
     final String displayTitle = routeName.isEmpty ? 'DASHBOARD' : routeName;
 
     if (isDesktop) {
@@ -67,15 +75,28 @@ class _AppShellState extends State<AppShell> {
                     title: displayTitle,
                     actions: [
                       IconButton(
+                        onPressed: () => _forceRefresh(context),
+                        icon: const Icon(
+                          Icons.refresh,
+                          color: AppColors.onSurfaceVariant,
+                        ),
+                        tooltip: 'FORCE REFRESH',
+                        splashRadius: 24,
+                      ),
+                      IconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.notifications_outlined,
-                            color: AppColors.onSurfaceVariant),
+                        icon: const Icon(
+                          Icons.notifications_outlined,
+                          color: AppColors.onSurfaceVariant,
+                        ),
                         splashRadius: 24,
                       ),
                       IconButton(
                         onPressed: () => context.go('/settings'),
-                        icon: const Icon(Icons.settings_outlined,
-                            color: AppColors.onSurfaceVariant),
+                        icon: const Icon(
+                          Icons.settings_outlined,
+                          color: AppColors.onSurfaceVariant,
+                        ),
                         splashRadius: 24,
                       ),
                       const SizedBox(width: 8),
@@ -98,6 +119,16 @@ class _AppShellState extends State<AppShell> {
         title: displayTitle,
         leading: const KineticLogo(),
         height: AppConstants.topNavHeight,
+        actions: [
+          IconButton(
+            onPressed: () => _forceRefresh(context),
+            icon: const Icon(
+              Icons.refresh,
+              color: AppColors.onSurfaceVariant,
+            ),
+            tooltip: 'FORCE REFRESH',
+          ),
+        ],
       ),
       body: widget.child,
       bottomNavigationBar: _MobileBottomNav(currentRoute: widget.currentRoute),
@@ -122,9 +153,7 @@ class _SideNav extends StatelessWidget {
       height: double.infinity,
       decoration: const BoxDecoration(
         color: AppColors.surface,
-        border: Border(
-          right: BorderSide(color: Color(0x1A484847), width: 1),
-        ),
+        border: Border(right: BorderSide(color: Color(0x1A484847), width: 1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,18 +164,23 @@ class _SideNav extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  Text(
-                    AuthService.user?['companyName']?.toString().toUpperCase() ?? 'IRON PULSE',
-                    style: GoogleFonts.syncopate(
-                      fontSize: 16, fontWeight: FontWeight.w700,
-                      color: AppColors.primaryContainer, letterSpacing: -0.5,
-                    ),
+                Text(
+                  AuthService.user?['companyName']?.toString().toUpperCase() ??
+                      'IRON PULSE',
+                  style: GoogleFonts.syncopate(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryContainer,
+                    letterSpacing: -0.5,
                   ),
+                ),
                 Text(
                   'ELITE PERFORMANCE',
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 8, fontWeight: FontWeight.w700,
-                    color: AppColors.onSurfaceVariant, letterSpacing: 3,
+                  style: GoogleFonts.roboto(
+                    fontSize: 8,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.onSurfaceVariant,
+                    letterSpacing: 3,
                   ),
                 ),
               ],
@@ -209,8 +243,10 @@ class _SideNav extends StatelessWidget {
                         borderRadius: BorderRadius.circular(2),
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      textStyle: GoogleFonts.lexend(
-                        fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 2,
+                      textStyle: GoogleFonts.roboto(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 2,
                       ),
                     ),
                   ),
@@ -281,20 +317,20 @@ class _NavItem extends StatelessWidget {
                   color: isActive
                       ? AppColors.onPrimaryContainer
                       : isDestructive
-                          ? AppColors.error
-                          : AppColors.onSurfaceVariant,
+                      ? AppColors.error
+                      : AppColors.onSurfaceVariant,
                 ),
                 const SizedBox(width: 12),
                 Text(
                   label.toUpperCase(),
-                  style: GoogleFonts.lexend(
+                  style: GoogleFonts.roboto(
                     fontSize: 12,
                     fontWeight: isActive ? FontWeight.w900 : FontWeight.w700,
                     color: isActive
                         ? AppColors.onPrimaryContainer
                         : isDestructive
-                            ? AppColors.error
-                            : AppColors.onSurfaceVariant,
+                        ? AppColors.error
+                        : AppColors.onSurfaceVariant,
                     letterSpacing: 1.5,
                   ),
                 ),
@@ -316,15 +352,13 @@ class _UserAvatar extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(2),
-        border: Border.all(
-          color: AppColors.outlineVariant.withOpacity(0.2),
-        ),
+        border: Border.all(color: AppColors.outlineVariant.withOpacity(0.2)),
       ),
       alignment: Alignment.center,
       child: Text(
         (AuthService.user?['name'] as String?)?.substring(0, 2).toUpperCase() ??
             'OW',
-        style: GoogleFonts.lexend(
+        style: GoogleFonts.roboto(
           fontSize: 10,
           fontWeight: FontWeight.w900,
           color: AppColors.primaryContainer,
@@ -333,7 +367,6 @@ class _UserAvatar extends StatelessWidget {
     );
   }
 }
-
 
 class _MobileBottomNav extends StatelessWidget {
   final String currentRoute;
@@ -387,8 +420,10 @@ class _BottomNavItem extends StatelessWidget {
   final String currentRoute;
 
   const _BottomNavItem({
-    required this.icon, required this.label,
-    required this.route, required this.currentRoute,
+    required this.icon,
+    required this.label,
+    required this.route,
+    required this.currentRoute,
   });
 
   @override
@@ -399,15 +434,25 @@ class _BottomNavItem extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 22,
-            color: isActive ? AppColors.primaryContainer : AppColors.onSurfaceVariant),
+          Icon(
+            icon,
+            size: 22,
+            color: isActive
+                ? AppColors.primaryContainer
+                : AppColors.onSurfaceVariant,
+          ),
           const SizedBox(height: 2),
-          Text(label,
-            style: GoogleFonts.spaceGrotesk(
-              fontSize: 8, fontWeight: FontWeight.w700,
-              color: isActive ? AppColors.primaryContainer : AppColors.onSurfaceVariant,
+          Text(
+            label,
+            style: GoogleFonts.roboto(
+              fontSize: 8,
+              fontWeight: FontWeight.w700,
+              color: isActive
+                  ? AppColors.primaryContainer
+                  : AppColors.onSurfaceVariant,
               letterSpacing: 1,
-            )),
+            ),
+          ),
         ],
       ),
     );

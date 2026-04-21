@@ -21,10 +21,8 @@ final appRouter = GoRouter(
       builder: (context, state) => const RegisterScreen(),
     ),
     ShellRoute(
-      builder: (context, state, child) => AppShell(
-        currentRoute: state.matchedLocation,
-        child: child,
-      ),
+      builder: (context, state, child) =>
+          AppShell(currentRoute: state.matchedLocation, child: child),
       routes: [
         GoRoute(
           path: AppConstants.routeDashboard,

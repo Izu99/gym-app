@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Payment = require('../models/Payment');
 const Member = require('../models/Member');
+const Tier = require('../models/Tier');
 
 // @desc    Get payments
 // @route   GET /api/payments
@@ -44,7 +45,65 @@ exports.getPayments = async (req, res) => {
 // @route   POST /api/payments
 exports.createPayment = async (req, res) => {
   try {
-    const payment = await Payment.create({ ...req.body, owner: req.user.id });
+    const { member: memberId, tierId, amount, dueDate, notes } = req.body;
+
+    const member = await Member.findOne({
+      _id: memberId,
+      owner: req.user.id,
+      isActive: true,
+    }).populate('tier');
+    if (!member) {
+      return res.status(404).json({ error: 'Active member not found' });
+    }
+
+    const existingUnpaid = await Payment.findOne({
+      owner: req.user.id,
+      member: memberId,
+      status: { $in: ['pending', 'overdue'] },
+    });
+    if (existingUnpaid) {
+      return res.status(400).json({
+        error: 'This member already has an unpaid payment record',
+      });
+    }
+
+    let selectedTier = member.tier;
+    if (tierId) {
+      selectedTier = await Tier.findOne({
+        _id: tierId,
+        owner: req.user.id,
+        isArchived: { $ne: true },
+      });
+      if (!selectedTier) {
+        return res.status(404).json({ error: 'Selected package not found' });
+      }
+    }
+
+    const numericAmount = Number(amount);
+    if (!Number.isFinite(numericAmount) || numericAmount < 0) {
+      return res.status(400).json({ error: 'Amount must be a valid non-negative number' });
+    }
+
+    if (tierId && String(selectedTier._id) !== String(member.tier?._id ?? member.tier)) {
+      member.tier = selectedTier._id;
+      member.monthlyFee = selectedTier.monthlyFee;
+    } else if (tierId) {
+      member.monthlyFee = selectedTier.monthlyFee;
+    }
+
+    member.paymentStatus = 'pending';
+    member.nextPaymentDate = dueDate ? new Date(dueDate) : member.nextPaymentDate;
+    await member.save();
+
+    const payment = await Payment.create({
+      owner: req.user.id,
+      member: member._id,
+      plan: selectedTier?.name ?? req.body.plan ?? member.tierLabel ?? 'GENERAL',
+      amount: numericAmount,
+      dueDate,
+      status: 'pending',
+      notes,
+    });
     res.status(201).json(payment);
   } catch (err) {
     res.status(400).json({ error: err.message });

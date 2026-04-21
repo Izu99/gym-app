@@ -38,9 +38,11 @@ class PaymentStatusChip extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           label,
-          style: GoogleFonts.spaceGrotesk(
-            fontSize: 10, fontWeight: FontWeight.w700,
-            color: color, letterSpacing: 1.5,
+          style: GoogleFonts.roboto(
+            fontSize: 10,
+            fontWeight: FontWeight.w700,
+            color: color,
+            letterSpacing: 1.5,
           ),
         ),
       ],
@@ -51,7 +53,11 @@ class PaymentStatusChip extends StatelessWidget {
 class MemberTierChip extends StatelessWidget {
   final String tier;
   final String tierLabel;
-  const MemberTierChip({super.key, required this.tier, required this.tierLabel});
+  const MemberTierChip({
+    super.key,
+    required this.tier,
+    required this.tierLabel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +91,11 @@ class MemberTierChip extends StatelessWidget {
       ),
       child: Text(
         tierLabel,
-        style: GoogleFonts.spaceGrotesk(
-          fontSize: 9, fontWeight: FontWeight.w700,
-          color: textColor, letterSpacing: 1.5,
+        style: GoogleFonts.roboto(
+          fontSize: 9,
+          fontWeight: FontWeight.w700,
+          color: textColor,
+          letterSpacing: 1.5,
         ),
       ),
     );

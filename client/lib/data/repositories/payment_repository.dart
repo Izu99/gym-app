@@ -37,7 +37,9 @@ class ApiPayment {
     return ApiPayment(
       id: json['_id'],
       memberId: member['_id'] ?? '',
-      memberName: (json['memberName'] ?? member['name'] ?? 'DELETED MEMBER').toString().toUpperCase(),
+      memberName: (json['memberName'] ?? member['name'] ?? 'DELETED MEMBER')
+          .toString()
+          .toUpperCase(),
       initials: member['initials'] ?? '??',
       plan: plan,
       amount: json['amount'].toDouble(),
@@ -49,7 +51,20 @@ class ApiPayment {
   static String _formatDate(String iso) {
     try {
       final d = DateTime.parse(iso);
-      final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      final months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec',
+      ];
       return '${months[d.month - 1]} ${d.day.toString().padLeft(2, '0')}, ${d.year}';
     } catch (_) {
       return iso;
@@ -69,7 +84,12 @@ class PaymentsPage {
   final int page;
   final int pages;
 
-  PaymentsPage({required this.payments, required this.total, required this.page, required this.pages});
+  PaymentsPage({
+    required this.payments,
+    required this.total,
+    required this.page,
+    required this.pages,
+  });
 }
 
 class PaymentSummary {
@@ -77,7 +97,11 @@ class PaymentSummary {
   final double pendingRevenue;
   final int overdueCount;
 
-  PaymentSummary({required this.totalRevenue, required this.pendingRevenue, required this.overdueCount});
+  PaymentSummary({
+    required this.totalRevenue,
+    required this.pendingRevenue,
+    required this.overdueCount,
+  });
 
   factory PaymentSummary.fromJson(Map<String, dynamic> json) {
     return PaymentSummary(
@@ -89,7 +113,10 @@ class PaymentSummary {
 }
 
 class PaymentRepository {
-  static Future<PaymentsPage> getPayments({String? status, int page = 1}) async {
+  static Future<PaymentsPage> getPayments({
+    String? status,
+    int page = 1,
+  }) async {
     final query = <String, String>{'page': '$page', 'limit': '20'};
     if (status != null) query['status'] = status;
 

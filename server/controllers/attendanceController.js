@@ -63,6 +63,57 @@ exports.getAttendance = async (req, res) => {
   }
 };
 
+// @desc    Get attendance calendar for a member
+// @route   GET /api/attendance/member-calendar
+exports.getMemberAttendanceCalendar = async (req, res) => {
+  try {
+    const { memberId, month } = req.query;
+    if (!memberId) {
+      return res.status(400).json({ error: 'memberId is required' });
+    }
+
+    const member = await Member.findOne({
+      _id: memberId,
+      owner: req.user.id,
+    }).select('name initials');
+    if (!member) return res.status(404).json({ error: 'Member not found' });
+
+    const baseMonth = month ? new Date(`${month}-01`) : new Date();
+    if (Number.isNaN(baseMonth.getTime())) {
+      return res.status(400).json({ error: 'month must be in YYYY-MM format' });
+    }
+
+    const start = new Date(baseMonth.getFullYear(), baseMonth.getMonth(), 1);
+    const end = new Date(baseMonth.getFullYear(), baseMonth.getMonth() + 1, 0);
+    end.setHours(23, 59, 59, 999);
+
+    const records = await Attendance.find({
+      owner: req.user.id,
+      member: memberId,
+      date: { $gte: start, $lte: end },
+    }).sort({ date: 1 });
+
+    res.json({
+      member: {
+        id: member._id,
+        name: member.name,
+        initials: member.initials,
+      },
+      month: `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}`,
+      records: records.map((record) => ({
+        _id: record._id,
+        date: record.date,
+        status: record.status,
+        session: record.session,
+        checkinTime: record.checkinTime,
+        checkoutTime: record.checkoutTime,
+      })),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // @desc    Mark attendance
 // @route   POST /api/attendance
 exports.markAttendance = async (req, res) => {

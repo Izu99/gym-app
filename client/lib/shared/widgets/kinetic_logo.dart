@@ -10,7 +10,7 @@ class KineticLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'KINETIC',
-      style: GoogleFonts.lexend(
+      style: GoogleFonts.roboto(
         fontSize: fontSize,
         fontWeight: FontWeight.w900,
         color: AppColors.primaryContainer,
