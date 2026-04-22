@@ -1,4 +1,4 @@
-enum PaymentStatus { paid, overdue, pending }
+enum PaymentStatus { paid, overdue, pending, partial, cancelled }
 
 enum AttendanceStatus { present, absent, pending }
 

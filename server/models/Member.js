@@ -18,10 +18,21 @@ const memberSchema = new mongoose.Schema(
       enum: ['paid', 'overdue', 'pending'],
       default: 'pending',
     },
+    status: {
+      type: String,
+      enum: ['active', 'overdue', 'frozen', 'cancelled', 'expired'],
+      default: 'active',
+    },
     nextPaymentDate: { type: Date },
     monthlyFee: { type: Number, required: true },
     isAtRisk: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
+    currentSubscription: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Subscription',
+    },
+    deactivatedAt: { type: Date },
+    deactivationReason: { type: String },
   },
   { timestamps: true }
 );

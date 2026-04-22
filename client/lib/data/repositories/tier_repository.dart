@@ -33,6 +33,19 @@ class Tier {
       isArchived: json['isArchived'] == true,
     );
   }
+
+  String get billingCycleLabel {
+    switch (billingCycle) {
+      case 'quarterly':
+        return '3 MONTHS';
+      case 'half_yearly':
+        return '6 MONTHS';
+      case 'yearly':
+        return '12 MONTHS';
+      default:
+        return '1 MONTH';
+    }
+  }
 }
 
 class TierRepository {

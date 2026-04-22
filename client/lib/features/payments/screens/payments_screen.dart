@@ -5,6 +5,7 @@ import '../../../core/constants/app_constants.dart';
 import '../../../data/models/member_model.dart';
 import '../../../data/repositories/payment_repository.dart';
 import '../../../core/services/data_sync_controller.dart';
+import '../../../data/services/payment_document_service.dart';
 import '../../../shared/widgets/avatar_placeholder.dart';
 import '../widgets/add_payment_dialog.dart';
 
@@ -124,6 +125,42 @@ class _PaymentsScreenState extends State<PaymentsScreen>
       dataSync.notify(DataRefreshEvent.payments);
       dataSync.notify(DataRefreshEvent.members);
       setState(() => _load());
+    }
+  }
+
+  Future<void> _downloadInvoice(ApiPayment payment) async {
+    try {
+      final file = await PaymentDocumentService.saveInvoicePdf(payment);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invoice saved to ${file.path}')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('PDF error: $e'),
+          backgroundColor: AppColors.errorContainer,
+        ),
+      );
+    }
+  }
+
+  Future<void> _openWhatsApp(ApiPayment payment) async {
+    try {
+      final file = await PaymentDocumentService.saveInvoicePdf(payment);
+      await PaymentDocumentService.openWhatsAppForPayment(
+        payment,
+        attachmentPath: file.path,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('WhatsApp error: $e'),
+          backgroundColor: AppColors.errorContainer,
+        ),
+      );
     }
   }
 
@@ -389,7 +426,7 @@ class _PaymentsScreenState extends State<PaymentsScreen>
                   color: AppColors.surfaceContainerHighest.withOpacity(0.3),
                   child: Row(
                     children: [
-                      Expanded(flex: 4, child: _ColHeader('MEMBER / PLAN')),
+                      Expanded(flex: 4, child: _ColHeader('MEMBER / INVOICE')),
                       Expanded(flex: 2, child: _ColHeader('AMOUNT')),
                       Expanded(flex: 2, child: _ColHeader('DUE DATE')),
                       Expanded(flex: 2, child: _ColHeader('STATUS')),
@@ -426,6 +463,8 @@ class _PaymentsScreenState extends State<PaymentsScreen>
                     isDesktop: isDesktop,
                     onMarkReceived: () => _markPaid(p),
                     onUnmarkPaid: () => _unmarkPaid(p),
+                    onDownloadPdf: () => _downloadInvoice(p),
+                    onOpenWhatsApp: () => _openWhatsApp(p),
                   ),
                 ),
 
@@ -560,11 +599,15 @@ class _PaymentRow extends StatelessWidget {
   final bool isDesktop;
   final VoidCallback onMarkReceived;
   final VoidCallback onUnmarkPaid;
+  final VoidCallback onDownloadPdf;
+  final VoidCallback onOpenWhatsApp;
   const _PaymentRow({
     required this.payment,
     required this.isDesktop,
     required this.onMarkReceived,
     required this.onUnmarkPaid,
+    required this.onDownloadPdf,
+    required this.onOpenWhatsApp,
   });
 
   @override
@@ -599,7 +642,7 @@ class _PaymentRow extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    payment.plan,
+                    '${payment.plan} • ${payment.invoiceNumber}',
                     style: GoogleFonts.roboto(
                       fontSize: 10,
                       color: AppColors.onSurfaceVariant,
@@ -617,6 +660,19 @@ class _PaymentRow extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
+                      if (payment.balanceAmount > 0 &&
+                          payment.balanceAmount != payment.amount)
+                        Text(
+                          'BAL Rs.${payment.balanceAmount.toStringAsFixed(2)}',
+                          style: GoogleFonts.roboto(
+                            fontSize: 9,
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      if (payment.balanceAmount > 0 &&
+                          payment.balanceAmount != payment.amount)
+                        const SizedBox(width: 8),
                       Text(
                         payment.dueDate,
                         style: GoogleFonts.roboto(
@@ -631,33 +687,29 @@ class _PaymentRow extends StatelessWidget {
                 ],
               ),
             ),
-            isPaid
-                ? GestureDetector(
-                    onTap: () => _showRevertConfirm(context, onUnmarkPaid),
-                    child: const Icon(
-                      Icons.check_circle,
-                      color: AppColors.primaryContainer,
-                      size: 20,
-                    ),
-                  )
-                : GestureDetector(
-                    onTap: onMarkReceived,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 6,
-                      ),
-                      color: AppColors.primaryContainer,
-                      child: Text(
-                        'PAID',
-                        style: GoogleFonts.roboto(
-                          fontSize: 8,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.onPrimaryContainer,
-                          letterSpacing: 1,
+            Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (!isPaid)
+                        _MobileActionBtn(
+                          icon: Icons.check_circle_outline,
+                          color: AppColors.primaryContainer,
+                          tooltip: 'MARK RECEIVED',
+                          onTap: onMarkReceived,
                         ),
+                      _MobileActionBtn(
+                        icon: Icons.download_rounded,
+                        color: AppColors.onSurfaceVariant,
+                        tooltip: 'DOWNLOAD PDF',
+                        onTap: onDownloadPdf,
                       ),
-                    ),
+                      _MobileActionBtn(
+                        icon: Icons.chat_outlined,
+                        color: AppColors.primaryContainer,
+                        tooltip: 'WHATSAPP',
+                        onTap: onOpenWhatsApp,
+                      ),
+                    ],
                   ),
           ],
         ),
@@ -700,10 +752,19 @@ class _PaymentRow extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              payment.plan,
+                              payment.invoiceNumber,
                               style: GoogleFonts.roboto(
                                 fontSize: 11,
                                 color: AppColors.onSurfaceVariant,
+                              ),
+                            ),
+                            Text(
+                              payment.plan,
+                              style: GoogleFonts.roboto(
+                                fontSize: 10,
+                                color: AppColors.onSurfaceVariant.withOpacity(
+                                  0.85,
+                                ),
                               ),
                             ),
                           ],
@@ -715,7 +776,10 @@ class _PaymentRow extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Text(
-                    'Rs.${payment.amount.toStringAsFixed(2)}',
+                    payment.balanceAmount > 0 &&
+                            payment.balanceAmount != payment.amount
+                        ? 'Rs.${payment.amount.toStringAsFixed(2)} / Bal Rs.${payment.balanceAmount.toStringAsFixed(2)}'
+                        : 'Rs.${payment.amount.toStringAsFixed(2)}',
                     style: GoogleFonts.roboto(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
@@ -742,31 +806,55 @@ class _PaymentRow extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: isPaid
-                        ? IconButton(
-                            onPressed: () =>
-                                _showRevertConfirm(context, onUnmarkPaid),
-                            icon: const Icon(Icons.history, size: 20),
-                            tooltip: 'REVERT TO UNPAID',
-                            color: AppColors.primaryContainer,
+                        ? Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: onDownloadPdf,
+                                icon: const Icon(Icons.download_rounded, size: 18),
+                                tooltip: 'DOWNLOAD PDF',
+                                color: AppColors.onSurfaceVariant,
+                              ),
+                              IconButton(
+                                onPressed: onOpenWhatsApp,
+                                icon: const Icon(Icons.chat_outlined, size: 18),
+                                tooltip: 'OPEN WHATSAPP',
+                                color: AppColors.primaryContainer,
+                              ),
+                              IconButton(
+                                onPressed: () =>
+                                    _showRevertConfirm(context, onUnmarkPaid),
+                                icon: const Icon(Icons.history, size: 20),
+                                tooltip: 'REVERT TO UNRECEIVED',
+                                color: AppColors.primaryContainer,
+                              ),
+                            ],
                           )
-                        : GestureDetector(
-                            onTap: onMarkReceived,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 14,
-                                vertical: 8,
-                              ),
-                              color: AppColors.primaryContainer,
-                              child: Text(
-                                'RECEIVED',
-                                style: GoogleFonts.roboto(
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w900,
-                                  color: AppColors.onPrimaryContainer,
-                                  letterSpacing: 1.5,
+                        : Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: onMarkReceived,
+                                icon: const Icon(
+                                  Icons.check_circle_outline,
+                                  size: 20,
                                 ),
+                                tooltip: 'MARK RECEIVED',
+                                color: AppColors.primaryContainer,
                               ),
-                            ),
+                              IconButton(
+                                onPressed: onDownloadPdf,
+                                icon: const Icon(Icons.download_rounded, size: 18),
+                                tooltip: 'DOWNLOAD PDF',
+                                color: AppColors.onSurfaceVariant,
+                              ),
+                              IconButton(
+                                onPressed: onOpenWhatsApp,
+                                icon: const Icon(Icons.chat_outlined, size: 18),
+                                tooltip: 'OPEN WHATSAPP',
+                                color: AppColors.primaryContainer,
+                              ),
+                            ],
                           ),
                   ),
                 ),
@@ -824,6 +912,35 @@ class _PaymentRow extends StatelessWidget {
   }
 }
 
+class _MobileActionBtn extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final String tooltip;
+  final VoidCallback onTap;
+  const _MobileActionBtn({
+    required this.icon,
+    required this.color,
+    required this.tooltip,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 36,
+      height: 36,
+      child: IconButton(
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
+        onPressed: onTap,
+        icon: Icon(icon, size: 18),
+        color: color,
+        tooltip: tooltip,
+      ),
+    );
+  }
+}
+
 class _StatusBadge extends StatelessWidget {
   final PaymentStatus status;
   const _StatusBadge({required this.status});
@@ -847,6 +964,16 @@ class _StatusBadge extends StatelessWidget {
         bg = AppColors.primaryContainer.withOpacity(0.15);
         textColor = AppColors.primaryContainer;
         label = 'PAID';
+        break;
+      case PaymentStatus.partial:
+        bg = AppColors.primary.withOpacity(0.12);
+        textColor = AppColors.primary;
+        label = 'PARTIAL';
+        break;
+      case PaymentStatus.cancelled:
+        bg = AppColors.error.withOpacity(0.12);
+        textColor = AppColors.error;
+        label = 'CANCELLED';
         break;
     }
     return Container(

@@ -8,7 +8,7 @@ const tierSchema = new mongoose.Schema(
     description: { type: String, default: '', trim: true, maxlength: 500 },
     billingCycle: {
       type: String,
-      enum: ['monthly', 'quarterly', 'yearly'],
+      enum: ['monthly', 'quarterly', 'half_yearly', 'yearly'],
       default: 'monthly',
     },
     joiningFee: { type: Number, default: 0, min: 0 },

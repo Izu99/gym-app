@@ -4,6 +4,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../data/repositories/member_repository.dart';
 import '../../../data/repositories/payment_repository.dart';
 import '../../../data/repositories/tier_repository.dart';
+import '../../../data/services/payment_document_service.dart';
 
 import '../../../core/services/data_sync_controller.dart';
 import '../../../shared/widgets/custom_top_bar.dart';
@@ -93,7 +94,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
     });
 
     try {
-      await PaymentRepository.createPayment({
+      final payment = await PaymentRepository.createPayment({
         'member': _selectedMember!.id,
         'tierId': _selectedTier?.id,
         'plan': _selectedTier?.name ?? _selectedMember!.tierLabel,
@@ -110,15 +111,10 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
           DataRefreshEvent.members,
         ); // Payment might affect member status
 
-        final selected = _selectedMember!;
-        final amt = double.parse(_amountCtrl.text);
-        final p = _selectedTier?.name ?? selected.tierLabel;
-
         // Show Receipt
         showDialog(
           context: context,
-          builder: (context) =>
-              _ReceiptDialog(member: selected, amount: amt, plan: p),
+          builder: (context) => _ReceiptDialog(payment: payment),
         ).then((_) {
           if (mounted) Navigator.pop(context, true);
         });
@@ -215,7 +211,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
                             ),
                             const SizedBox(height: 24),
 
-                            _label('PACKAGE'),
+                            _label('PACKAGE / BILLING CYCLE'),
                             const SizedBox(height: 8),
                             DropdownButtonFormField<Tier>(
                               value: _selectedTier,
@@ -224,7 +220,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
                                     (tier) => DropdownMenuItem<Tier>(
                                       value: tier,
                                       child: Text(
-                                        '${tier.name.toUpperCase()} • RS.${tier.monthlyFee.toStringAsFixed(0)}',
+                                        '${tier.name.toUpperCase()} • ${tier.billingCycleLabel} • RS.${tier.monthlyFee.toStringAsFixed(0)}',
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.roboto(
                                           fontSize: 12,
@@ -256,7 +252,7 @@ class _AddPaymentDialogState extends State<AddPaymentDialog> {
                             ),
                             const SizedBox(height: 24),
 
-                            _label('AMOUNT (RS.)'),
+                            _label('INVOICE AMOUNT (RS.)'),
                             const SizedBox(height: 8),
                             TextFormField(
                               controller: _amountCtrl,
@@ -469,22 +465,15 @@ class _PaymentMemberSearchDialogState extends State<_PaymentMemberSearchDialog> 
 }
 
 class _ReceiptDialog extends StatelessWidget {
-  final ApiMember member;
-  final double amount;
-  final String plan;
+  final ApiPayment payment;
 
-  const _ReceiptDialog({
-    required this.member,
-    required this.amount,
-    required this.plan,
-  });
+  const _ReceiptDialog({required this.payment});
 
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final dateStr = "${now.day} ${_getMonth(now.month)} ${now.year}";
-    final invoiceNo =
-        "INV-${now.millisecondsSinceEpoch.toString().substring(7)}";
+    final invoiceNo = payment.invoiceNumber;
 
     return Dialog(
       backgroundColor: AppColors.surface,
@@ -528,15 +517,15 @@ class _ReceiptDialog extends StatelessWidget {
                   const SizedBox(height: 32),
                   _receiptRow('INVOICE NO', invoiceNo),
                   _receiptRow('DATE', dateStr),
-                  _receiptRow('MEMBER', member.name.toUpperCase()),
-                  _receiptRow('PLAN', plan.toUpperCase()),
+                  _receiptRow('MEMBER', payment.memberName.toUpperCase()),
+                  _receiptRow('PLAN', payment.plan.toUpperCase()),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Divider(color: AppColors.outlineVariant),
                   ),
                   _receiptRow(
                     'TOTAL AMOUNT',
-                    'RS.${amount.toStringAsFixed(2)}',
+                    'RS.${payment.amount.toStringAsFixed(2)}',
                     isBold: true,
                   ),
                   const SizedBox(height: 40),
@@ -544,7 +533,18 @@ class _ReceiptDialog extends StatelessWidget {
                     width: double.infinity,
                     height: 50,
                     child: OutlinedButton.icon(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () async {
+                        final file = await PaymentDocumentService.saveInvoicePdf(
+                          payment,
+                        );
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Invoice saved to ${file.path}'),
+                            ),
+                          );
+                        }
+                      },
                       icon: const Icon(Icons.download, size: 18),
                       label: Text(
                         'DOWNLOAD PDF',

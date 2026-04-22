@@ -29,6 +29,16 @@ class PaymentStatusChip extends StatelessWidget {
         label = 'PENDING';
         icon = Icons.schedule;
         break;
+      case PaymentStatus.partial:
+        color = AppColors.primary;
+        label = 'PARTIAL';
+        icon = Icons.pie_chart;
+        break;
+      case PaymentStatus.cancelled:
+        color = AppColors.error;
+        label = 'CANCELLED';
+        icon = Icons.cancel;
+        break;
     }
 
     return Row(

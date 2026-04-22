@@ -188,7 +188,7 @@ class _ManagePackagesDialogState extends State<ManagePackagesDialog> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _label('MONTHLY FEE (RS.)'),
+                    _label('PACKAGE PRICE (RS.)'),
                     const SizedBox(height: 8),
                     TextField(
                       controller: _feeCtrl,
@@ -223,8 +223,12 @@ class _ManagePackagesDialogState extends State<ManagePackagesDialog> {
             dropdownColor: AppColors.surfaceContainer,
             items: const [
               DropdownMenuItem(value: 'monthly', child: Text('Monthly')),
-              DropdownMenuItem(value: 'quarterly', child: Text('Quarterly')),
-              DropdownMenuItem(value: 'yearly', child: Text('Yearly')),
+              DropdownMenuItem(value: 'quarterly', child: Text('3 Months')),
+              DropdownMenuItem(
+                value: 'half_yearly',
+                child: Text('6 Months'),
+              ),
+              DropdownMenuItem(value: 'yearly', child: Text('12 Months')),
             ],
             onChanged: (value) {
               if (value == null) return;
@@ -271,7 +275,7 @@ class _ManagePackagesDialogState extends State<ManagePackagesDialog> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Rs.${_feeCtrl.text.isEmpty ? '0' : _feeCtrl.text} / ${_billingCycle.toUpperCase()}',
+                  'Rs.${_feeCtrl.text.isEmpty ? '0' : _feeCtrl.text} / ${_billingCycleLabel(_billingCycle)}',
                   style: GoogleFonts.roboto(
                     fontSize: 12,
                     color: AppColors.primaryContainer,
@@ -397,7 +401,7 @@ class _ManagePackagesDialogState extends State<ManagePackagesDialog> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Rs.${tier.monthlyFee.toStringAsFixed(0)} / ${tier.billingCycle.toUpperCase()}',
+                          'Rs.${tier.monthlyFee.toStringAsFixed(0)} / ${tier.billingCycleLabel}',
                           style: GoogleFonts.roboto(
                             fontSize: 11,
                             color: AppColors.onSurfaceVariant,
@@ -457,4 +461,17 @@ class _ManagePackagesDialogState extends State<ManagePackagesDialog> {
       letterSpacing: 2,
     ),
   );
+
+  String _billingCycleLabel(String cycle) {
+    switch (cycle) {
+      case 'quarterly':
+        return '3 MONTHS';
+      case 'half_yearly':
+        return '6 MONTHS';
+      case 'yearly':
+        return '12 MONTHS';
+      default:
+        return '1 MONTH';
+    }
+  }
 }

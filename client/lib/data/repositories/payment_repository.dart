@@ -6,8 +6,17 @@ class ApiPayment {
   final String memberId;
   final String memberName;
   final String initials;
+  final String? memberPhone;
+  final String? memberEmail;
+  final String invoiceNumber;
   final String plan;
   final double amount;
+  final double paidAmount;
+  final double balanceAmount;
+  final String paymentMethod;
+  final String? receivedBy;
+  final String? billingPeriodStart;
+  final String? billingPeriodEnd;
   final String dueDate;
   final PaymentStatus status;
 
@@ -16,8 +25,17 @@ class ApiPayment {
     required this.memberId,
     required this.memberName,
     required this.initials,
+    this.memberPhone,
+    this.memberEmail,
+    required this.invoiceNumber,
     required this.plan,
     required this.amount,
+    required this.paidAmount,
+    required this.balanceAmount,
+    required this.paymentMethod,
+    this.receivedBy,
+    this.billingPeriodStart,
+    this.billingPeriodEnd,
     required this.dueDate,
     required this.status,
   });
@@ -41,8 +59,21 @@ class ApiPayment {
           .toString()
           .toUpperCase(),
       initials: member['initials'] ?? '??',
+      memberPhone: member['phone']?.toString(),
+      memberEmail: member['email']?.toString(),
+      invoiceNumber: (json['invoiceNumber'] ?? 'DRAFT').toString(),
       plan: plan,
       amount: json['amount'].toDouble(),
+      paidAmount: (json['paidAmount'] ?? 0).toDouble(),
+      balanceAmount: (json['balanceAmount'] ?? json['amount'] ?? 0).toDouble(),
+      paymentMethod: (json['paymentMethod'] ?? 'manual').toString(),
+      receivedBy: json['receivedBy']?.toString(),
+      billingPeriodStart: json['billingPeriodStart'] != null
+          ? _formatDate(json['billingPeriodStart'])
+          : null,
+      billingPeriodEnd: json['billingPeriodEnd'] != null
+          ? _formatDate(json['billingPeriodEnd'])
+          : null,
       dueDate: _formatDate(json['dueDate']),
       status: _parseStatus(json['status']),
     );
@@ -74,6 +105,8 @@ class ApiPayment {
   static PaymentStatus _parseStatus(String s) {
     if (s == 'paid') return PaymentStatus.paid;
     if (s == 'overdue') return PaymentStatus.overdue;
+    if (s == 'partial') return PaymentStatus.partial;
+    if (s == 'cancelled') return PaymentStatus.cancelled;
     return PaymentStatus.pending;
   }
 }
@@ -143,7 +176,8 @@ class PaymentRepository {
     await ApiService.patch('/payments/$id/unmark-paid');
   }
 
-  static Future<void> createPayment(Map<String, dynamic> data) async {
-    await ApiService.post('/payments', data);
+  static Future<ApiPayment> createPayment(Map<String, dynamic> data) async {
+    final response = await ApiService.post('/payments', data);
+    return ApiPayment.fromJson(response);
   }
 }

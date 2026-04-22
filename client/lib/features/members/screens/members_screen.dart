@@ -83,14 +83,14 @@ class _MembersScreenState extends State<MembersScreen>
     _load();
   });
 
-  Future<void> _deleteMember(ApiMember member) async {
+  Future<void> _deactivateMember(ApiMember member) async {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.surface,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         title: Text(
-          'DELETE MEMBER',
+          'DEACTIVATE MEMBER',
           style: GoogleFonts.roboto(
             fontWeight: FontWeight.w900,
             color: AppColors.error,
@@ -98,7 +98,7 @@ class _MembersScreenState extends State<MembersScreen>
           ),
         ),
         content: Text(
-          'Are you sure you want to permanently remove ${member.name}? This action cannot be undone.',
+          'Deactivate ${member.name}? Their history will stay in the system, but they will be removed from active operations.',
           style: GoogleFonts.roboto(
             color: AppColors.onSurfaceVariant,
             fontSize: 14,
@@ -125,7 +125,7 @@ class _MembersScreenState extends State<MembersScreen>
               ),
             ),
             child: Text(
-              'DELETE',
+              'DEACTIVATE',
               style: GoogleFonts.roboto(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -429,7 +429,7 @@ class _MembersScreenState extends State<MembersScreen>
                 member: m,
                 isDesktop: isDesktop,
                 onEdit: () => _editMember(m),
-                onDelete: () => _deleteMember(m),
+                onDelete: () => _deactivateMember(m),
               ),
             ),
 
@@ -654,7 +654,7 @@ class _MemberRow extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            'DELETE',
+                            'DEACTIVATE',
                             style: GoogleFonts.roboto(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -742,6 +742,7 @@ class _MobileRow extends StatelessWidget {
                 size: 18,
                 color: AppColors.error,
               ),
+              tooltip: 'DEACTIVATE MEMBER',
             ),
           ],
         ),

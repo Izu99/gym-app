@@ -1,7 +1,12 @@
 const Tier = require('../models/Tier');
 const Member = require('../models/Member');
 
-const allowedBillingCycles = new Set(['monthly', 'quarterly', 'yearly']);
+const allowedBillingCycles = new Set([
+  'monthly',
+  'quarterly',
+  'half_yearly',
+  'yearly',
+]);
 
 function normalizeTierPayload(body = {}) {
   const payload = {};
@@ -28,7 +33,9 @@ function normalizeTierPayload(body = {}) {
   if (body.billingCycle != null) {
     const billingCycle = String(body.billingCycle).trim().toLowerCase();
     if (!allowedBillingCycles.has(billingCycle)) {
-      throw new Error('Billing cycle must be monthly, quarterly, or yearly');
+      throw new Error(
+        'Billing cycle must be monthly, quarterly, half_yearly, or yearly'
+      );
     }
     payload.billingCycle = billingCycle;
   }
