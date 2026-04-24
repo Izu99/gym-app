@@ -10,7 +10,7 @@ SolidCompression=yes
 WizardStyle=modern
 
 [Languages]
-Name: "english"; MessagesFile: "compiler:Default.iss"
+Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Additional icons:"
@@ -19,8 +19,8 @@ Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription:
 Source: "client\build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 
 [Icons]
-Name: "{group}\Gym App"; Filename: "{app}\gym_app.exe"
-Name: "{commondesktop}\Gym App"; Filename: "{app}\gym_app.exe"; Tasks: desktopicon
+Name: "{group}\Gym App"; Filename: "{app}\kinetic_gym.exe"
+Name: "{commondesktop}\Gym App"; Filename: "{app}\kinetic_gym.exe"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\gym_app.exe"; Description: "Launch Gym App"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\kinetic_gym.exe"; Description: "Launch Gym App"; Flags: nowait postinstall skipifsilent
